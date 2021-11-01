@@ -1,5 +1,6 @@
 package org.sot.project.controller;
 
+import javax.annotation.Resource;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
 import org.sot.project.entity.User;
@@ -9,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.sot.project.service.UserService;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,11 +27,15 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "1.0.0-SNAPSHOT", description = "用户管理", value = "用户管理")
 @Slf4j
 public class UserController {
+
+    @Resource
+    UserService userService;
+
     @GetMapping
     @ApiOperation(value = "用户登录", notes = "备注")
     @ApiImplicitParams({@ApiImplicitParam(name = "account", value = "用户名", dataType = DataType.STRING, paramType = ParamType.QUERY, defaultValue = "xxx"),@ApiImplicitParam(name = "password", value = "用户密码", dataType = DataType.STRING, paramType = ParamType.QUERY, defaultValue = "xxx")})
     public ApiResponse<User> login(String account,String password) {
-        return ApiResponse.<User>builder().code(200).message("操作成功").data(new User()).build();
+        return WebUtils.process(()->userService.LoginService(account,password));
     }
 
     @GetMapping("/{userId}")
