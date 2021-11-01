@@ -1,4 +1,4 @@
-package org.tos.service.entity;
+package org.sot.project.entity;
 
 import java.util.List;
 

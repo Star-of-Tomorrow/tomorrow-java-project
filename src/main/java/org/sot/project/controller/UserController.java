@@ -1,9 +1,9 @@
-package org.tos.service.controller;
+package org.sot.project.controller;
 
-import org.tos.service.common.ApiResponse;
-import org.tos.service.common.DataType;
-import org.tos.service.common.ParamType;
-import org.tos.service.entity.User;
+import org.sot.project.common.ApiResponse;
+import org.sot.project.common.ParamType;
+import org.sot.project.entity.User;
+import org.sot.project.common.DataType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -35,7 +35,6 @@ public class UserController {
     @ApiOperation(value = "用户信息查询", notes = "用户主键")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)})
     public ApiResponse<User> get(@PathVariable String userId) {
-        log.info("单个参数用  @ApiImplicitParam");
         return ApiResponse.<User>builder().code(200).message("操作成功").data(new User()).build();
     }
 

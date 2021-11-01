@@ -1,4 +1,4 @@
-package org.tos.service.config;
+package org.sot.project.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +25,11 @@ public class Swagger2Config {
 
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("com.xkcoding.swagger.controller")).paths(PathSelectors.any()).build();
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("org.sot.service.controller")).paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("spring-boot-demo").description("这是一个简单的 Swagger API 演示").contact(new Contact("Yangkai.Shen", "http://xkcoding.com", "237497819@qq.com")).version("1.0.0-SNAPSHOT").build();
+        return new ApiInfoBuilder().title("明日之星公益项目").description("这是一个简单的 Swagger API 演示").version("1.0.0-SNAPSHOT").build();
     }
 
 }

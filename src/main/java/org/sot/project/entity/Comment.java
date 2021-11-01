@@ -1,4 +1,4 @@
-package org.tos.service.entity;
+package org.sot.project.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,4 +1,4 @@
-package org.tos.service;
+package org.sot.project;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

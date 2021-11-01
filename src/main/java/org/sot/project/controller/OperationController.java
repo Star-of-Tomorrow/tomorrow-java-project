@@ -1,11 +1,11 @@
-package org.tos.service.controller;
+package org.sot.project.controller;
 
-import org.tos.service.common.ApiResponse;
-import org.tos.service.common.DataType;
-import org.tos.service.common.ParamType;
-import org.tos.service.entity.Activity;
-import org.tos.service.entity.Comment;
-import org.tos.service.entity.Information;
+import org.sot.project.common.ApiResponse;
+import org.sot.project.common.ParamType;
+import org.sot.project.entity.Activity;
+import org.sot.project.entity.Comment;
+import org.sot.project.common.DataType;
+import org.sot.project.entity.Information;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

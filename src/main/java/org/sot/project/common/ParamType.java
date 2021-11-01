@@ -1,4 +1,4 @@
-package org.tos.service.common;
+package org.sot.project.common;
 
 /**
  * <p>
