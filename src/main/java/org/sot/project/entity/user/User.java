@@ -1,4 +1,4 @@
-package org.sot.project.entity;
+package org.sot.project.entity.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,18 +9,11 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * <p>
- * 用户实体
- * </p>
- *
- * @author yangkai.shen
- * @date Created in 2018-11-29 11:31
+ * 用户类型，分为个人和机构
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @ApiModel(value = "用户实体", description = "User Entity")
-public class User extends AbstractEntity implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 5057954049311281252L;
 

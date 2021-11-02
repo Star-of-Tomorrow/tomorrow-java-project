@@ -1,4 +1,4 @@
-package org.sot.project.entity;
+package org.sot.project.entity.activity;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @ApiModel(value = "信息实体", description = "Information Entity")
 @FieldDefaults(level = AccessLevel.PUBLIC)
-public class Information extends AbstractEntity{
+public class Information{
     @ApiModelProperty(value = "信息类型", required = true)
     String type;
     @ApiModelProperty(value = "信息描述", required = true)

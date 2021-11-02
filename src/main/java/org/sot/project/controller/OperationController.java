@@ -2,10 +2,10 @@ package org.sot.project.controller;
 
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
-import org.sot.project.entity.Activity;
-import org.sot.project.entity.Comment;
+import org.sot.project.entity.activity.Activity;
+import org.sot.project.entity.activity.Comment;
 import org.sot.project.common.DataType;
-import org.sot.project.entity.Information;
+import org.sot.project.entity.activity.Information;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

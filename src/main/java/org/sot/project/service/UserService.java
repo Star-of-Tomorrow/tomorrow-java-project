@@ -1,6 +1,5 @@
 package org.sot.project.service;
 
-import org.sot.project.entity.User;
 import org.springframework.stereotype.Service;
 
 /**

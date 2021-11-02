@@ -3,7 +3,7 @@ package org.sot.project.controller;
 import javax.annotation.Resource;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
-import org.sot.project.entity.User;
+import org.sot.project.entity.user.User;
 import org.sot.project.common.DataType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.sot.project.service.UserService;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 /**
