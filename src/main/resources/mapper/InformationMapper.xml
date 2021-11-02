@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.fudian.writer.infrastructure.dao.UserBaseDAO">
+
+  <sql id="table_name">
+    information
+  </sql>
+
+  <sql id="all_fields">
+    id,create_time,update_time,user_id,information_name,information_content,urls,information_type
+  </sql>
+
+  <resultMap id="resultMap" type="InformationDO">
+    <id column="id" property="id"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="user_id" property="userId"/>
+    <result column="information_name" property="informationName"/>
+    <result column="information_content" property="informationContent"/>
+    <result column="urls" property="urls"/>
+    <result javaType="information_type" property="informationType"/>
+  </resultMap>
+
+</mapper>

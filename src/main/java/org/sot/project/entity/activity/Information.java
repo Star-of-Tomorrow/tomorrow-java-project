@@ -1,5 +1,6 @@
 package org.sot.project.entity.activity;
 
+import java.util.Date;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -8,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.sot.project.entity.InformationTypeEnum;
+import org.sot.project.entity.user.User;
 
 /**
  * @description:
@@ -19,17 +22,26 @@ import lombok.experimental.FieldDefaults;
 @ApiModel(value = "信息实体", description = "Information Entity")
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class Information{
+
+    @ApiModelProperty(value = "创建者", required = true)
+    private User creator;
+
+    @ApiModelProperty(value = "活动名字", required = true)
+    private String activityName;
+
+    @ApiModelProperty(value = "活动内容", required = true)
+    private String activityContent;
+
+    @ApiModelProperty(value = "活动图片", required = true)
+    private List<String> urls;
+
+    @ApiModelProperty(value = "活动评论 仅 类型为活动时才有", required = true)
+    private List<Comment> comments;
+
+    @ApiModelProperty(value = "活动创建时间", required = true)
+    private Date createTime;
+
     @ApiModelProperty(value = "信息类型", required = true)
-    String type;
-    @ApiModelProperty(value = "信息描述", required = true)
-    String description;
-    @ApiModelProperty(value = "图片地址", required = true)
-    List<String> picUrls;
-    @ApiModelProperty(value = "用户Id", required = true)
-    String userId;
-    @ApiModelProperty(value = "用户名字", required = true)
-    String userName;
-    @ApiModelProperty(value = "用户头像", required = true)
-    String userPicUrl;
+    private InformationTypeEnum informationType;
 
 }
