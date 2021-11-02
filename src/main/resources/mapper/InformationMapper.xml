@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.fudian.writer.infrastructure.dao.UserBaseDAO">
+<mapper namespace="org.sot.project.dao.mapper.InformationDAO">
 
   <sql id="table_name">
     information
@@ -21,5 +21,24 @@
     <result column="urls" property="urls"/>
     <result javaType="information_type" property="informationType"/>
   </resultMap>
+
+  <insert id="saveInformation">
+    insert into
+    <include refid="table_name"/>
+    (<include refid="all_fields"/>)
+    values
+    (
+    #{id},
+    #{createTime},
+    #{updateTime},
+    #{userId},
+    #{informationName},
+    #{informationContent},
+    #{urls},
+    #{informationType}
+    )
+  </insert>
+
+
 
 </mapper>

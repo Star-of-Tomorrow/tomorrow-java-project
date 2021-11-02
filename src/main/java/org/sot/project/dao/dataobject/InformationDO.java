@@ -41,4 +41,9 @@ public class InformationDO extends BaseDO{
 	 * 信息类型
 	 */
 	private String informationType;
+
+	public void initDO(){
+		this.setCreateTime(new Date());
+		this.setUpdateTime(new Date());
+	}
 }

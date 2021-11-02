@@ -1,12 +1,15 @@
 package org.sot.project.controller;
 
+import javax.annotation.Resource;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
+import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.entity.activity.Activity;
 import org.sot.project.entity.activity.Comment;
 import org.sot.project.common.DataType;
 import org.sot.project.entity.activity.Information;
 
+import org.sot.project.service.InformationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OperationController {
 
-
+    @Resource
+    private InformationService informationService;
     //活动部分接口
     @PostMapping(value = "/activity")
     @ApiOperation(value = "创建活动")
@@ -55,9 +59,8 @@ public class OperationController {
     // 留言部分接口
     @PostMapping(value = "/comments")
     @ApiOperation(value = "发布留言")
-    public Information postComment(@RequestBody Information information) {
-        log.info("如果是 POST PUT 这种带 @RequestBody 的可以不用写 @ApiImplicitParam");
-        return information;
+    public ApiResponse<Information> postComment(@RequestBody InformationDTO informationDTO) {
+        return WebUtils.process(()->informationService.postComment(informationDTO));
     }
 
     @GetMapping("/comments/{userId}")
