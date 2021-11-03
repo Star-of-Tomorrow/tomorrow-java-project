@@ -29,7 +29,7 @@ public class InformationService {
 	@Resource
 	private UserLikeDAO userLikeDAO;
 
-	public Boolean postComment(InformationDTO informationDTO){
+	public InformationDTO postComment(InformationDTO informationDTO){
 		//TODO:参数校验 增加根据类型的校验
 
 		//TODO:封装下面的方法 转换
@@ -42,7 +42,11 @@ public class InformationService {
 		informationDO.setUrls(JSON.toJSONString(informationDTO.getComments()));
 		informationDO.setInformationType(informationDTO.getInformationType());
 		//存储
-		return informationDAO.saveInformation(informationDO)>0;
+		boolean saveSuccess = informationDAO.saveInformation(informationDO)>0;
+		if(saveSuccess){
+			return informationDTO;
+		}
+		return null;
 	}
 
 	public List<InformationDTO> queryInformationSByType(String type) {

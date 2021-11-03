@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -52,14 +53,14 @@ public class OperationController {
     @GetMapping("/activityByUserId/{userId}")
     @ApiOperation(value = "活动列表查询 通过用户id", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<List<Activity>> getActivitiesByUserId(@PathVariable String userId) {
+    public ApiResponse<List<InformationDTO>> getActivitiesByUserId(@PathVariable String userId) {
         log.info("单个参数用  @ApiImplicitParam");
         return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
     }
 
     @GetMapping("/activity/all")
     @ApiOperation(value = "查询所有活动列表", notes = "")
-    public ApiResponse<List<Activity>> getActivities() {
+    public ApiResponse<List<InformationDTO>> getActivities() {
         log.info("单个参数用  @ApiImplicitParam");
         return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
     }
@@ -67,7 +68,7 @@ public class OperationController {
     @GetMapping("/activity/{activityId}")
     @ApiOperation(value = "查询单个活动内容", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "activityId", value = "活动id", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<List<Activity>> getActivitiesByActivityId(@PathVariable String activityId) {
+    public ApiResponse<List<InformationDTO>> getActivitiesByActivityId(@PathVariable String activityId) {
         log.info("单个参数用  @ApiImplicitParam");
         //查活动 获取活动信息
         //查留言 获取留言信息
@@ -78,8 +79,12 @@ public class OperationController {
     // 留言部分接口
     @PostMapping(value = "/comments")
     @ApiOperation(value = "发布留言")
-    public ApiResponse<Information> postComment(@RequestBody InformationDTO informationDTO) {
-        return WebUtils.process(()->informationService.postComment(informationDTO));
+    public ApiResponse<InformationDTO> postComment(@RequestBody InformationDTO informationDTO) {
+        InformationDTO informationDTO1 = informationService.postComment(informationDTO);
+        if (Objects.isNull(informationDTO1)) {
+            return ApiResponse.<InformationDTO>builder().code(400).message("操作失败").data(informationDTO1).build();
+        }
+        return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
     }
     //做一个分页接口
     @GetMapping("/comments/{userId}")
@@ -115,7 +120,7 @@ public class OperationController {
     @GetMapping(value = "/shuffling")
     @ApiOperation(value = "轮播图")
     @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "可传可不传", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<List<Information>> shuffling(String type) {
+    public ApiResponse<List<InformationDTO>> shuffling(String type) {
         //type指定为活动类型
         return WebUtils.process(()->informationService.queryInformationSByType(type));
     }
@@ -131,10 +136,5 @@ public class OperationController {
         String informationId = informationDTO.getInformationId();
         return ApiResponse.<List<Comment>>builder().code(200).message("操作成功").data(new ArrayList()).build();
     }
-
-
-
-
-
 
 }
