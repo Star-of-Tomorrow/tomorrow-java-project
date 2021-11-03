@@ -18,6 +18,11 @@ import org.sot.project.entity.user.User;
 public class InformationDO extends BaseDO{
 
 	/**
+	 * 信息Id
+	 */
+	private String informationId;
+
+	/**
 	 * 创建者
 	 */
 	private String userId;

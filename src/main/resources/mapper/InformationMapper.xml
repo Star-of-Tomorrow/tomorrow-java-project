@@ -8,7 +8,7 @@
   </sql>
 
   <sql id="all_fields">
-    id,create_time,update_time,user_id,information_name,information_content,urls,information_type
+    id,create_time,update_time,user_id,information_id,information_name,information_content,urls,information_type
   </sql>
 
   <resultMap id="resultMap" type="InformationDO">
@@ -16,6 +16,7 @@
     <result column="create_time" property="createTime"/>
     <result column="update_time" property="updateTime"/>
     <result column="user_id" property="userId"/>
+    <result column="information_id" property="informationId"/>
     <result column="information_name" property="informationName"/>
     <result column="information_content" property="informationContent"/>
     <result column="urls" property="urls"/>
@@ -32,6 +33,7 @@
     #{createTime},
     #{updateTime},
     #{userId},
+    #{informationId},
     #{informationName},
     #{informationContent},
     #{urls},
@@ -39,6 +41,19 @@
     )
   </insert>
 
+  <select id="batchQueryInformationById" resultMap="resultMap">
+    select
+    <include refid="all_fields"/>
+    from
+    <include refid="table_name"/>
+    where 1 = 1
+    <if test="idList!+null and list.size() > 0">
+      and information_id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+          #{id}
+        </foreach>
+    </if>
 
+  </select>
 
 </mapper>

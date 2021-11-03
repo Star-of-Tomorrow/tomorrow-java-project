@@ -3,7 +3,7 @@ package org.sot.project.controller;
 import javax.annotation.Resource;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
-import org.sot.project.controller.dto.GiveLikeDTO;
+import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.entity.activity.Activity;
 import org.sot.project.entity.activity.Comment;
@@ -92,11 +92,21 @@ public class OperationController {
 
     @PostMapping(value = "/giveLike")
     @ApiOperation(value = "点赞操作")
-    public ApiResponse<Information> giveLike(@RequestBody GiveLikeDTO giveLikeDTO) {
-        return WebUtils.process(()->informationService.postComment(giveLikeDTO));
+    public ApiResponse<Boolean> giveLike(@RequestBody LikeDTO likeDTO) {
+        return WebUtils.process(()->informationService.giveLike(likeDTO));
     }
 
+    @PostMapping(value = "/deleteLike")
+    @ApiOperation(value = "取消点赞操作")
+    public ApiResponse<Boolean> deleteLike(@RequestBody LikeDTO likeDTO) {
+        return WebUtils.process(()->informationService.deleteLike(likeDTO));
+    }
 
+    @PostMapping(value = "/queryUserLike")
+    @ApiOperation(value = "查询用户点赞过的内容")
+    public ApiResponse<List<InformationDTO>> queryUserLike(@RequestBody String userId) {
+        return WebUtils.process(()->informationService.queryLikeInformationS(userId));
+    }
 
 
 

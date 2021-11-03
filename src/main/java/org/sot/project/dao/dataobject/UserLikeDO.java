@@ -8,7 +8,7 @@ import lombok.Data;
  * @date 2021/11/3 2:15 下午
  */
 @Data
-public class LikeDO extends BaseDO{
+public class UserLikeDO extends BaseDO{
 
 	/**
 	 * userId
@@ -18,5 +18,5 @@ public class LikeDO extends BaseDO{
 	/**
 	 * 信息Id
 	 */
-	private String InformationId;
+	private String informationId;
 }

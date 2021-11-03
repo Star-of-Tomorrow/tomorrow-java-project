@@ -1,14 +1,16 @@
 package org.sot.project.service;
 
 import com.alibaba.fastjson.JSON;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
-import lombok.Data;
-import org.sot.project.controller.dto.GiveLikeDTO;
+import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.dao.dataobject.InformationDO;
-import org.sot.project.dao.dataobject.LikeDO;
+import org.sot.project.dao.dataobject.UserLikeDO;
 import org.sot.project.dao.mapper.InformationDAO;
-import org.sot.project.entity.activity.Information;
+import org.sot.project.dao.mapper.UserLikeDAO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +23,9 @@ public class InformationService {
 
 	@Resource
 	private InformationDAO informationDAO;
+
+	@Resource
+	private UserLikeDAO userLikeDAO;
 
 	public Boolean postComment(InformationDTO informationDTO){
 		//TODO:参数校验 增加根据类型的校验
@@ -38,16 +43,41 @@ public class InformationService {
 		return informationDAO.saveInformation(informationDO)>0;
 	}
 
-	public Boolean giveLike(GiveLikeDTO giveLikeDTO){
-
-		LikeDO likeDO = new LikeDO();
-		likeDO.init();
-		likeDO.setUserId(giveLikeDTO.getUserId());
-		likeDO.setInformationId(likeDO.getInformationId());
+	public Boolean giveLike(LikeDTO likeDTO){
+		//TODO:幂等
+		UserLikeDO userLikeDO = new UserLikeDO();
+		userLikeDO.init();
+		userLikeDO.setUserId(likeDTO.getUserId());
+		userLikeDO.setInformationId(userLikeDO.getInformationId());
 		//存储
-		return informationDAO.saveInformation(informationDO)>0;
+		return userLikeDAO.saveUserLike(userLikeDO)>0;
 	}
 
+	public Boolean deleteLike(LikeDTO likeDTO){
+		//TODO:幂等
+		UserLikeDO userLikeDO = new UserLikeDO();
+		userLikeDO.init();
+		userLikeDO.setUserId(likeDTO.getUserId());
+		userLikeDO.setInformationId(userLikeDO.getInformationId());
+		//存储
+		return userLikeDAO.deleteUserLike(userLikeDO)>0;
+	}
 
+	public List<InformationDTO> queryLikeInformationS(String userId){
+		List<UserLikeDO> userLikeDOS = userLikeDAO.queryUserLikeByUserId(userId);
+		List<String> informationIds = userLikeDOS.stream().map(UserLikeDO::getInformationId).collect(Collectors.toList());
+		List<InformationDO> informationDOList = informationDAO.batchQueryInformationById(informationIds);
+		List<InformationDTO> informationDTOList = new ArrayList<>();
+		for (InformationDO informationDO : informationDOList){
+			InformationDTO informationDTO = new InformationDTO();
+			informationDTO.setInformationId(informationDO.getInformationId());
+			informationDTO.setInformationName(informationDO.getInformationName());
+			informationDTO.setInformationType(informationDO.getInformationType());
+			informationDTO.setInformationContent(informationDO.getInformationContent());
+			informationDTO.setUrls(JSON.parseObject(informationDO.getUrls(),List.class));
+			//TODO:评论是否添加？
+		}
+		return informationDTOList;
+	}
 
 }

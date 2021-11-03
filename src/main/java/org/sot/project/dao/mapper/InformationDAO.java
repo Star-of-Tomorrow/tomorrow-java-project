@@ -1,5 +1,6 @@
 package org.sot.project.dao.mapper;
 
+import java.util.List;
 import org.sot.project.dao.dataobject.InformationDO;
 
 /**
@@ -9,4 +10,6 @@ import org.sot.project.dao.dataobject.InformationDO;
 public interface InformationDAO {
 
 	int saveInformation(InformationDO informationDO);
+
+	List<InformationDO> batchQueryInformationById(List<String> idList);
 }

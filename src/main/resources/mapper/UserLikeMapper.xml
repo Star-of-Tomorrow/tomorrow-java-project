@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.sot.project.dao.mapper.UserLikeDAO">
+
+  <sql id="table_name">
+    user_like
+  </sql>
+
+  <sql id="all_fields">
+    id,create_time,update_time,user_id,information_id
+  </sql>
+
+
+  <resultMap id="resultMap" type="UserLikeDO">
+    <id column="id" property="id"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="user_id" property="userId"/>
+    <result column="information_id" property="informationId"/>
+  </resultMap>
+
+  <insert id="saveUserLike">
+    insert into
+    <include refid="table_name"/>
+    (<include refid="all_fields"/>)
+    values
+    (
+    #{id},
+    #{createTime},
+    #{updateTime},
+    #{userId},
+    #{informationId}
+    )
+  </insert>
+
+  <delete id="deleteUserLike">
+    delete from
+    <include refid="table_name"/>
+    where
+    user_id = #{userId} and information_id = #{informationId}
+
+  </delete>
+
+  <select id="queryUserLikeByUserId" resultMap="resultMap">
+    select
+    <include refid="all_fields"/>
+    from
+    <include refid="table_name"/>
+    where
+    user_id = #{userId}
+    ;
+  </select>
+
+</mapper>

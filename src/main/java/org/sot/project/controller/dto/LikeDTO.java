@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2021/11/3 2:08 下午
  */
 @Data
-public class GiveLikeDTO {
+public class LikeDTO {
 
 	@ApiModelProperty(value = "点赞的用户ID", required = true)
 	private String userId;

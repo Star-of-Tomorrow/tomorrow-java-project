@@ -18,6 +18,9 @@ public class InformationDTO {
 	@ApiModelProperty(value = "创建者", required = true)
 	private String userId;
 
+	@ApiModelProperty(value = "活动Id", required = true)
+	private String informationId;
+
 	@ApiModelProperty(value = "活动名字", required = true)
 	private String informationName;
 
