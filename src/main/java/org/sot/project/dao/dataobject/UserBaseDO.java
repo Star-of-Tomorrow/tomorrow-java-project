@@ -14,6 +14,16 @@ public class UserBaseDO extends BaseDO{
 	private String userId;
 
 	/**
+	 * 微信唯一Id
+	 */
+	private String openId;
+
+	/**
+	 * 微信全平台唯一Id
+	 */
+	private String unionId;
+
+	/**
 	 * 用户密码
 	 */
 	private String password;
