@@ -49,7 +49,7 @@ public class OperationController {
         return activity;
     }
 
-    @GetMapping("/activity/{userId}")
+    @GetMapping("/activityByUserId/{userId}")
     @ApiOperation(value = "活动列表查询 通过用户id", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", dataType = DataType.STRING, paramType = ParamType.PATH)})
     public ApiResponse<List<Activity>> getActivitiesByUserId(@PathVariable String userId) {
