@@ -25,7 +25,7 @@ public class Swagger2Config {
 
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("org.sot.service.controller")).paths(PathSelectors.any()).build();
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("org.sot.project.controller")).paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiInfo() {

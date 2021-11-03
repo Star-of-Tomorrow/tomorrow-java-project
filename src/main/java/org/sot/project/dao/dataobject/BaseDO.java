@@ -25,4 +25,9 @@ public class BaseDO {
 	 * 更新时间
 	 */
 	private Date updateTime;
+
+	public void init(){
+		this.createTime = new Date();
+		this.updateTime = new Date();
+	}
 }

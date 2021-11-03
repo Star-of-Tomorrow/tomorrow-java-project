@@ -3,6 +3,7 @@ package org.sot.project.controller;
 import javax.annotation.Resource;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
+import org.sot.project.controller.dto.GiveLikeDTO;
 import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.entity.activity.Activity;
 import org.sot.project.entity.activity.Comment;
@@ -87,6 +88,12 @@ public class OperationController {
     public ApiResponse<List<Comment>> getComments(@PathVariable String userId) {
         log.info("单个参数用  @ApiImplicitParam");
         return ApiResponse.<List<Comment>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+    }
+
+    @PostMapping(value = "/giveLike")
+    @ApiOperation(value = "点赞操作")
+    public ApiResponse<Information> giveLike(@RequestBody GiveLikeDTO giveLikeDTO) {
+        return WebUtils.process(()->informationService.postComment(giveLikeDTO));
     }
 
 
