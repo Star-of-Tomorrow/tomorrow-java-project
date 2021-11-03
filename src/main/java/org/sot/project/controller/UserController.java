@@ -65,7 +65,7 @@ public class UserController {
     @PostMapping("/wx/login")
     @ResponseBody
     @ApiImplicitParam(name = "", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)
-    public ApiResponse<String> userLogin(@RequestBody String code) {
+    public ApiResponse<String> userLogin(@RequestParam String code) {
         // 用户非敏感信息：rawData
         // 签名：signature
         // 1.接收小程序发送的code

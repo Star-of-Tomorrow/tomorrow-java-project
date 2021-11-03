@@ -98,17 +98,39 @@ public class OperationController {
 
     @PostMapping(value = "/deleteLike")
     @ApiOperation(value = "取消点赞操作")
+    @ApiImplicitParams({@ApiImplicitParam(name = "", value = "", dataType = DataType.STRING, paramType = ParamType.PATH)})
     public ApiResponse<Boolean> deleteLike(@RequestBody LikeDTO likeDTO) {
         return WebUtils.process(()->informationService.deleteLike(likeDTO));
     }
 
     @PostMapping(value = "/queryUserLike")
     @ApiOperation(value = "查询用户点赞过的内容")
-    public ApiResponse<List<InformationDTO>> queryUserLike(@RequestBody String userId) {
+    @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户id", dataType = DataType.STRING, paramType = ParamType.PATH)})
+    public ApiResponse<List<InformationDTO>> queryUserLike( String userId) {
         return WebUtils.process(()->informationService.queryLikeInformationS(userId));
     }
 
 
+    //轮播图接口
+    @GetMapping(value = "/shuffling")
+    @ApiOperation(value = "轮播图")
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "可传可不传", dataType = DataType.STRING, paramType = ParamType.PATH)})
+    public ApiResponse<List<Information>> shuffling(String type) {
+        //type指定为活动类型
+        return WebUtils.process(()->informationService.queryInformationSByType(type));
+    }
+
+
+    //用户权限校验接口
+    @PostMapping(value = "/PermissionVerify")
+    @ApiOperation(value = "用户权限校验接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "可传可不传", dataType = DataType.STRING, paramType = ParamType.PATH)})
+    public ApiResponse<Boolean> PermissionVerify(@RequestBody InformationDTO informationDTO) {
+        // infomation get userId match?
+        String userId = informationDTO.getUserId();
+        String informationId = informationDTO.getInformationId();
+        return ApiResponse.<List<Comment>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+    }
 
 
 

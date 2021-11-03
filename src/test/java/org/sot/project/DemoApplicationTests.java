@@ -24,11 +24,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoApplicationTests {
 	public static void main(String[] args) {
 		DocsConfig config = new DocsConfig();
-		config.setProjectPath("/Users/shidu/SelfProjects/tomorrow-java-project"); // root project path
-		config.addJavaSrcPath("/Users/shidu/SelfProjects/tomorrow-java-project/src/main/java");
+		config.setProjectPath("/Users/coapeng/IdeaProjects/test"); // root project path
+		config.addJavaSrcPath("/Users/coapeng/IdeaProjects/personal/tomorrow-java-project/src/main/java");
 		config.setProjectName("tomorrow-java-project"); // project name
 		config.setApiVersion("V1.0");       // api version
-		config.setDocsPath("/Users/shidu/SelfProjects/tomorrow/tomorrow-doc"); // api docs target path
+		config.setDocsPath("/Users/coapeng/IdeaProjects/test/doc"); // api docs target path
 		config.setAutoGenerate(Boolean.TRUE);  // auto generate
 		Docs.buildHtmlDocs(config); // execute to generate
 	}

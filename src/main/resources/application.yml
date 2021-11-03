@@ -2,6 +2,9 @@ server:
   port: 9090
   servlet:
     context-path: /demo
+file:
+  upload:
+    url=static/upload/imgs
 
 spring:
   datasource:

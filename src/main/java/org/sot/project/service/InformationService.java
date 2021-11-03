@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.annotation.Resource;
 import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.controller.dto.InformationDTO;
@@ -43,6 +45,15 @@ public class InformationService {
 		return informationDAO.saveInformation(informationDO)>0;
 	}
 
+	public List<InformationDTO> queryInformationSByType(String type) {
+		List<InformationDO> informationDOList = informationDAO.queryInformationByType(type);
+		List<InformationDTO>
+			informationDTOs =
+			informationDOList.stream().map(e -> information2InformationDTO(e))
+				.collect(Collectors.toList());
+		return informationDTOs;
+	}
+
 	public Boolean giveLike(LikeDTO likeDTO){
 		//TODO:幂等
 		UserLikeDO userLikeDO = new UserLikeDO();
@@ -78,6 +89,17 @@ public class InformationService {
 			//TODO:评论是否添加？
 		}
 		return informationDTOList;
+	}
+
+	public InformationDTO information2InformationDTO(InformationDO informationDO) {
+		InformationDTO informationDTO = new InformationDTO();
+		informationDTO.setUserId(informationDO.getUserId());
+		informationDTO.setInformationId(informationDO.getInformationId());
+		informationDTO.setInformationName(informationDO.getInformationName());
+		informationDTO.setInformationContent(informationDO.getInformationContent());
+		informationDTO.setUrls(JSON.parseArray(informationDO.getUrls(), String.class));
+		informationDTO.setInformationType(informationDO.getInformationType());
+		return informationDTO;
 	}
 
 }
