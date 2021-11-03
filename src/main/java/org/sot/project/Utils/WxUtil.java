@@ -2,17 +2,8 @@ package org.sot.project.Utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-
-import java.security.AlgorithmParameters;
-import java.security.Security;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
 * @description:
@@ -39,7 +30,7 @@ public class WxUtil {
 		//默认参数
 		requestUrlParam.put("grant_type", "authorization_code");
 		//发送post请求读取调用微信接口获取openid用户唯一标识
-		JSONObject jsonObject = JSON.parseObject(HttpClientUtil.doPost(requestUrl, requestUrlParam));
+		JSONObject jsonObject = JSON.parseObject(HttpClientUtil.doGet(requestUrl, requestUrlParam));
 		return jsonObject;
 	}
 

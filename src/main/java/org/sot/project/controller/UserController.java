@@ -65,18 +65,17 @@ public class UserController {
     @PostMapping("/wx/login")
     @ResponseBody
     @ApiImplicitParam(name = "", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)
-    public ApiResponse<User> user_login(@RequestBody UserVo userVo) {
-        String code = (String) userVo.getWxCode();
-        String userName = userVo.getUserName();
-        String password = userVo.getPassword();
+    public ApiResponse<String> userLogin(@RequestBody String code) {
         // 用户非敏感信息：rawData
         // 签名：signature
         // 1.接收小程序发送的code
         // 2.开发者服务器 登录凭证校验接口 appi + appsecret + code
         JSONObject SessionKeyOpenId = WxUtil.getSessionKeyOrOpenId(code);
         // 3.接收微信接口服务 获取返回的参数
+        log.info("登录用户user信息:{},",SessionKeyOpenId);
         String openid = SessionKeyOpenId.getString("openid");
         String sessionKey = SessionKeyOpenId.getString("session_key");
+
         // 5.根据返回的User实体类，判断用户是否是新用户，是的话，将用户信息存到数据库；不是的话，更新最新登录时间
 ////        User user = this.userService.findByOpenId(openid);
 //        if (user == null) {
@@ -91,7 +90,7 @@ public class UserController {
 //        result.put("token", sessionKey);
 //        result.put("userInfo", rawData);
 //        return ResultGenerator.genSuccessResult("登录成功", result);
-        return ApiResponse.<User>builder().code(200).message("操作成功").data(new User()).build();
+        return ApiResponse.<String>builder().code(200).message("操作成功").data(openid).build();
     }
 
 
