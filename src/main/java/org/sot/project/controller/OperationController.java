@@ -69,18 +69,18 @@ public class OperationController {
 
     // 留言部分接口
     @PostMapping(value = "/comments")
-    @ApiOperation(value = "发布新进展或评论")
+    @ApiOperation(value = "发表进展或评论")
     public ApiResponse<InformationDTO> postComment(@RequestBody CommentDTO commentDTO) {
         return WebUtils.process(()->informationService.saveComment(commentDTO));
     }
 
     //做一个分页接口
     @GetMapping("/comments/{userId}")
-    @ApiOperation(value = "留言列表查询", notes = "")
+    @ApiOperation(value = "根据用户Id查询评论及进展", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", dataType = DataType.STRING, paramType = ParamType.PATH)})
     public ApiResponse<List<Comment>> getComments(@PathVariable String userId) {
         log.info("单个参数用  @ApiImplicitParam");
-        return ApiResponse.<List<Comment>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+        return WebUtils.process(()->informationService.queryCommentByUserId(userId));
     }
 
     @PostMapping(value = "/giveLike")

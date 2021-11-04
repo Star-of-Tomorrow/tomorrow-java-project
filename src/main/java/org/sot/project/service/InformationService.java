@@ -150,8 +150,8 @@ public class InformationService {
 		return commentDAO.insertComment(commentDTO2commentDO(commentDTO)) > 0;
 	}
 
-	public List<CommentDTO> queryComment(String userId){
-		return null;
+	public List<CommentDTO> queryCommentByUserId(String userId){
+		return commentDOList2commentDTOList(commentDAO.queryCommentSByUserId(userId));
 	}
 
 
@@ -163,5 +163,23 @@ public class InformationService {
 		commentDO.setUrls(JSON.toJSONString(commentDTO.getUrls()));
 		commentDO.setType(commentDTO.getType());
 		return commentDO;
+	}
+
+	public CommentDTO commentDO2commentDTO(CommentDO commentDO){
+		CommentDTO commentDTO = new CommentDTO();
+		commentDTO.setInformationId(commentDO.getInformationId());
+		commentDTO.setContent(commentDO.getContent());
+		commentDTO.setUserId(commentDO.getUserId());
+		commentDTO.setUrls(JSON.parseObject(commentDO.getUrls(),List.class));
+		commentDTO.setType(commentDO.getType());
+		return commentDTO;
+	}
+
+	public List<CommentDTO> commentDOList2commentDTOList(List<CommentDO> commentDOList){
+		List<CommentDTO> commentDTOList = new ArrayList<>();
+		for (CommentDO commentDO : commentDOList){
+			commentDTOList.add(commentDO2commentDTO(commentDO));
+		}
+		return commentDTOList;
 	}
 }

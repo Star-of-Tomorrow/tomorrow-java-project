@@ -1,5 +1,6 @@
 package org.sot.project.dao.mapper;
 
+import java.util.List;
 import org.sot.project.dao.dataobject.CommentDO;
 
 /**
@@ -9,4 +10,6 @@ import org.sot.project.dao.dataobject.CommentDO;
 public interface CommentDAO {
 
 	int insertComment(CommentDO commentDO);
+
+	List<CommentDO> queryCommentSByUserId(String userId);
 }
