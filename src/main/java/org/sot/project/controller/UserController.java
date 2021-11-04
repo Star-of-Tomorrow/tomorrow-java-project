@@ -9,6 +9,8 @@ import org.sot.project.Utils.WxUtil;
 import org.sot.project.Vo.UserVo;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
+import org.sot.project.dao.dataobject.UserBaseDO;
+import org.sot.project.entity.UserTypeEnum;
 import org.sot.project.entity.user.User;
 import org.sot.project.common.DataType;
 import io.swagger.annotations.Api;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -44,14 +47,18 @@ public class UserController {
     @ApiOperation(value = "用户登录", notes = "备注")
     @ApiImplicitParams({@ApiImplicitParam(name = "account", value = "用户名", dataType = DataType.STRING, paramType = ParamType.QUERY, defaultValue = "xxx"),@ApiImplicitParam(name = "password", value = "用户密码", dataType = DataType.STRING, paramType = ParamType.QUERY, defaultValue = "xxx")})
     public ApiResponse<User> login(String account,String password) {
-        return WebUtils.process(()->userService.LoginService(account,password));
+        return ApiResponse.<User>builder().code(200).message("操作成功").data(null).build();
     }
 
     @GetMapping("/{userId}")
     @ApiOperation(value = "用户信息查询", notes = "用户主键")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)})
-    public ApiResponse<User> get(@PathVariable String userId) {
-        return ApiResponse.<User>builder().code(200).message("操作成功").data(new User()).build();
+    public ApiResponse<UserBaseDO> get(@PathVariable String userId) {
+        UserBaseDO userBaseDO = userService.getUserByUserId(userId);
+        if(Objects.isNull(userBaseDO)){
+            return ApiResponse.<UserBaseDO>builder().code(400).message("查询用户信息失败").data(null).build();
+        }
+        return ApiResponse.<UserBaseDO>builder().code(200).message("操作成功").data(userBaseDO).build();
     }
 
     @DeleteMapping("/{userId}")
@@ -65,32 +72,27 @@ public class UserController {
     @PostMapping("/wx/login")
     @ResponseBody
     @ApiImplicitParam(name = "", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)
-    public ApiResponse<String> userLogin(@RequestParam String code) {
-        // 用户非敏感信息：rawData
-        // 签名：signature
-        // 1.接收小程序发送的code
-        // 2.开发者服务器 登录凭证校验接口 appi + appsecret + code
+    public ApiResponse<UserBaseDO> userLogin(@RequestParam String code) {
         JSONObject SessionKeyOpenId = WxUtil.getSessionKeyOrOpenId(code);
-        // 3.接收微信接口服务 获取返回的参数
         log.info("登录用户user信息:{},",SessionKeyOpenId);
         String openid = SessionKeyOpenId.getString("openid");
         String sessionKey = SessionKeyOpenId.getString("session_key");
-
-        // 5.根据返回的User实体类，判断用户是否是新用户，是的话，将用户信息存到数据库；不是的话，更新最新登录时间
-////        User user = this.userService.findByOpenId(openid);
-//        if (user == null) {
-//            // 用户信息入库
-//        } else {
-//            // 重新设置会话skey
-//            user.setSkey(sessionKey);
-//            userService.updateUserInfo(user, null);
-//        }
-//        //6. 把新的skey返回给小程序
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("token", sessionKey);
-//        result.put("userInfo", rawData);
-//        return ResultGenerator.genSuccessResult("登录成功", result);
-        return ApiResponse.<String>builder().code(200).message("操作成功").data(openid).build();
+        String unionId = SessionKeyOpenId.getString("unionId");
+        UserBaseDO result;
+        UserBaseDO userBaseDO = userService.getUserByOpenId(openid);
+        if (userBaseDO == null) {
+            // 用户信息入库
+            UserBaseDO newBaseDo = new UserBaseDO();
+            newBaseDo.setOpenId(openid);
+            newBaseDo.setUnionId(unionId);
+            newBaseDo.setType(UserTypeEnum.ACTIVITY.getTypeCode());
+            result = userService.saveUserBO(newBaseDo);
+        } else {
+            result= userBaseDO;
+        }
+        //6. 把新的skey返回给小程序
+        log.info("登录用户user信息:{},",result);
+        return ApiResponse.<UserBaseDO>builder().code(200).message("操作成功").data(result).build();
     }
 
 

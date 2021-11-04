@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.sot.project.common.ApiResponse;
@@ -15,7 +14,6 @@ import org.sot.project.common.ParamType;
 import org.sot.project.controller.dto.CommentDTO;
 import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.controller.dto.LikeDTO;
-import org.sot.project.entity.activity.Activity;
 import org.sot.project.entity.activity.Comment;
 import org.sot.project.service.InformationService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +51,8 @@ public class OperationController {
         return WebUtils.process(()->informationService.queryInformationByUserId(userId));
     }
 
+
+    //todo 分页
     @GetMapping("/information/all")
     @ApiOperation(value = "查询所有活动列表", notes = "")
     public ApiResponse<List<InformationDTO>> getActivities() {
@@ -67,9 +67,10 @@ public class OperationController {
     }
 
     // 留言部分接口
+    //todo
     @PostMapping(value = "/comments")
     @ApiOperation(value = "发表进展或评论")
-    public ApiResponse<InformationDTO> postComment(@RequestBody CommentDTO commentDTO) {
+    public ApiResponse<Boolean> postComment(@RequestBody CommentDTO commentDTO) {
         return WebUtils.process(()->informationService.saveComment(commentDTO));
     }
 
@@ -113,6 +114,8 @@ public class OperationController {
     }
 
 
+
+    //todo
     //用户权限校验接口
     @PostMapping(value = "/PermissionVerify")
     @ApiOperation(value = "用户权限校验接口")

@@ -55,6 +55,18 @@ public class InformationService {
 		return null;
 	}
 
+
+	//todo 轮播
+	public List<InformationDTO> lunbo(String type) {
+		List<InformationDO> informationDOList = informationDAO.queryInformationByType(type);
+		List<InformationDTO>
+			informationDTOs =
+			informationDOList.stream().map(e -> information2InformationDTO(e))
+				.collect(Collectors.toList());
+		return informationDTOs;
+	}
+
+
 	public List<InformationDTO> queryInformationSByType(String type) {
 		List<InformationDO> informationDOList = informationDAO.queryInformationByType(type);
 		List<InformationDTO>
