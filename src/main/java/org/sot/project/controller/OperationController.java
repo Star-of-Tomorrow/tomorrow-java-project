@@ -1,15 +1,22 @@
 package org.sot.project.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.sot.project.common.ApiResponse;
+import org.sot.project.common.DataType;
 import org.sot.project.common.ParamType;
-import org.sot.project.controller.dto.LikeDTO;
+import org.sot.project.controller.dto.CommentDTO;
 import org.sot.project.controller.dto.InformationDTO;
+import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.entity.activity.Activity;
 import org.sot.project.entity.activity.Comment;
-import org.sot.project.common.DataType;
-import org.sot.project.entity.activity.Information;
-
 import org.sot.project.service.InformationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,16 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @description:
@@ -43,56 +40,46 @@ public class OperationController {
     private InformationService informationService;
 
     //活动部分接口
-    @PostMapping(value = "/activity")
-    @ApiOperation(value = "创建活动")
-    public Activity createActivity(@RequestBody Activity activity) {
-        log.info("如果是 POST PUT 这种带 @RequestBody 的可以不用写 @ApiImplicitParam");
-        return activity;
+    @PostMapping(value = "/createInformation")
+    @ApiOperation(value = "创建活动或者发布瞬间")
+    public ApiResponse<InformationDTO> createInformation(@RequestBody InformationDTO informationDTO) {
+        return WebUtils.process(()->informationService.createInformation(informationDTO));
     }
 
-    @GetMapping("/activityByUserId/{userId}")
-    @ApiOperation(value = "活动列表查询 通过用户id", notes = "")
+    @GetMapping("/informationByUserId/{userId}")
+    @ApiOperation(value = "活动及瞬间信息查询 通过用户id", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<List<InformationDTO>> getActivitiesByUserId(@PathVariable String userId) {
-        log.info("单个参数用  @ApiImplicitParam");
-        return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+    public ApiResponse<List<InformationDTO>> getInformationsByUserId(@PathVariable String userId) {
+        return WebUtils.process(()->informationService.queryInformationByUserId(userId));
     }
 
-    @GetMapping("/activity/all")
+    @GetMapping("/information/all")
     @ApiOperation(value = "查询所有活动列表", notes = "")
     public ApiResponse<List<InformationDTO>> getActivities() {
-        log.info("单个参数用  @ApiImplicitParam");
-        return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+        return WebUtils.process(()->informationService.queryInformationS());
     }
 
-    @GetMapping("/activity/{activityId}")
+    @GetMapping("/activity/{informationId}")
     @ApiOperation(value = "查询单个活动内容", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "activityId", value = "活动id", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<List<InformationDTO>> getActivitiesByActivityId(@PathVariable String activityId) {
-        log.info("单个参数用  @ApiImplicitParam");
-        //查活动 获取活动信息
-        //查留言 获取留言信息
-        //查用户信息
-        return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+    public ApiResponse<InformationDTO> getActivitiesByActivityId(@PathVariable String informationId) {
+        return WebUtils.process(()->informationService.queryInformationByInformationId(informationId));
     }
 
     // 留言部分接口
     @PostMapping(value = "/comments")
-    @ApiOperation(value = "发布留言")
-    public ApiResponse<InformationDTO> postComment(@RequestBody InformationDTO informationDTO) {
-        InformationDTO informationDTO1 = informationService.postComment(informationDTO);
-        if (Objects.isNull(informationDTO1)) {
-            return ApiResponse.<InformationDTO>builder().code(400).message("操作失败").data(informationDTO1).build();
-        }
-        return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+    @ApiOperation(value = "发表进展或评论")
+    public ApiResponse<InformationDTO> postComment(@RequestBody CommentDTO commentDTO) {
+        return WebUtils.process(()->informationService.saveComment(commentDTO));
     }
+
     //做一个分页接口
     @GetMapping("/comments/{userId}")
-    @ApiOperation(value = "留言列表查询", notes = "")
+    @ApiOperation(value = "根据用户Id查询评论及进展", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", dataType = DataType.STRING, paramType = ParamType.PATH)})
     public ApiResponse<List<Comment>> getComments(@PathVariable String userId) {
         log.info("单个参数用  @ApiImplicitParam");
-        return ApiResponse.<List<Comment>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+        return WebUtils.process(()->informationService.queryCommentByUserId(userId));
     }
 
     @PostMapping(value = "/giveLike")

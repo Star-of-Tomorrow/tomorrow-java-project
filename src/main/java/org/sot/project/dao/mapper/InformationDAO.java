@@ -20,4 +20,7 @@ public interface InformationDAO {
 
 	List<InformationDO> queryInformationByType(String type);
 
+	List<InformationDO> queryInformationByUserId(String userId);
+
+	List<InformationDO> queryInformationS();
 }

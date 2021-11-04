@@ -1,11 +1,13 @@
 package org.sot.project.dao.dataobject;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * @author ShiDu
  * @date 2021/11/2 10:23 上午
  */
+@Data
 public class UserBaseDO extends BaseDO{
 
 	/**
@@ -22,11 +24,6 @@ public class UserBaseDO extends BaseDO{
 	 * 微信全平台唯一Id
 	 */
 	private String unionId;
-
-	/**
-	 * 用户密码
-	 */
-	private String password;
 
 	/**
 	 * 用户名

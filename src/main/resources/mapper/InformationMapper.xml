@@ -20,7 +20,7 @@
     <result column="information_name" property="informationName"/>
     <result column="information_content" property="informationContent"/>
     <result column="urls" property="urls"/>
-    <result javaType="information_type" property="informationType"/>
+    <result column="information_type" property="informationType"/>
   </resultMap>
 
   <insert id="saveInformation">
@@ -54,6 +54,22 @@
         </foreach>
     </if>
 
+  </select>
+  <select id="queryInformationByUserId" resultMap="resultMap">
+    select
+    <include refid="all_fields"/>
+    from
+    <include refid="table_name"/>
+    where 1 = 1
+    <if test="userId != null">
+      and user_id = #{userId}
+    </if>
+  </select>
+  <select id="queryInformationS" resultMap="resultMap">
+    select
+    <include refid="all_fields"/>
+    from
+    <include refid="table_name"/>
   </select>
 
 </mapper>

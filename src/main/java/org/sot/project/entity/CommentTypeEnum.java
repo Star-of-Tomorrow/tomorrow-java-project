@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 信息类型枚举
- * @author ShiDu
- * @date 2021/11/2 10:12 上午
+ * @author Timing
+ * @date 2021/11/4 4:27 下午
  */
 @Getter
 @AllArgsConstructor
-public enum InformationTypeEnum {
+public enum CommentTypeEnum {
 
-	ACTIVITY("activity","活动类型"),
-	MOMENT("moment","瞬间"),
+	COMMENT("comment","评论类型"),
+	PROGRESS("progress","活动进展"),
 	;
 	private String typeCode;
 	private String desc;
 }
+

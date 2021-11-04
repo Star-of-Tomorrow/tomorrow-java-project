@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.Resource;
+import org.sot.project.controller.dto.CommentDTO;
 import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.controller.dto.InformationDTO;
+import org.sot.project.dao.dataobject.CommentDO;
 import org.sot.project.dao.dataobject.InformationDO;
 import org.sot.project.dao.dataobject.UserLikeDO;
+import org.sot.project.dao.mapper.CommentDAO;
 import org.sot.project.dao.mapper.InformationDAO;
 import org.sot.project.dao.mapper.UserLikeDAO;
 import org.springframework.stereotype.Service;
@@ -29,12 +32,15 @@ public class InformationService {
 	@Resource
 	private UserLikeDAO userLikeDAO;
 
-	public InformationDTO postComment(InformationDTO informationDTO){
+	@Resource
+	private CommentDAO commentDAO;
+
+	public InformationDTO createInformation(InformationDTO informationDTO){
 		//TODO:参数校验 增加根据类型的校验
 
 		//TODO:封装下面的方法 转换
 		InformationDO informationDO = new InformationDO();
-		informationDO.initDO();
+		informationDO.init();
 		informationDO.setUserId(informationDTO.getUserId());
 		informationDO.setInformationName(informationDTO.getInformationName());
 		informationDO.setInformationContent(informationDTO.getInformationContent());
@@ -58,6 +64,28 @@ public class InformationService {
 		return informationDTOs;
 	}
 
+	public List<InformationDTO> queryInformationByUserId(String userId){
+		List<InformationDO> informationDOList = informationDAO.queryInformationByUserId(userId);
+		return informationDOList2informationDTOList(informationDOList);
+	}
+
+	public InformationDTO queryInformationByInformationId(String informationId){
+		List<String> informationIdS = new ArrayList<>();
+		informationIdS.add(informationId);
+		List<InformationDO> informationDOList = informationDAO.batchQueryInformationById(informationIdS);
+		List<InformationDTO> informationDTOList = informationDOList2informationDTOList(informationDOList);
+		if (informationDTOList.size() == 0){
+			return new InformationDTO();
+		}else {
+			return informationDTOList.get(0);
+		}
+	}
+
+	public List<InformationDTO> queryInformationS(){
+		List<InformationDO> informationDOList = informationDAO.queryInformationS();
+		return informationDOList2informationDTOList(informationDOList);
+	}
+
 	public Boolean giveLike(LikeDTO likeDTO){
 		//TODO:幂等
 		UserLikeDO userLikeDO = new UserLikeDO();
@@ -78,21 +106,13 @@ public class InformationService {
 		return userLikeDAO.deleteUserLike(userLikeDO)>0;
 	}
 
-	public List<InformationDTO> queryLikeInformationS(String userId){
+	public List<InformationDTO> queryLikeInformationS(String userId) {
 		List<UserLikeDO> userLikeDOS = userLikeDAO.queryUserLikeByUserId(userId);
-		List<String> informationIds = userLikeDOS.stream().map(UserLikeDO::getInformationId).collect(Collectors.toList());
-		List<InformationDO> informationDOList = informationDAO.batchQueryInformationById(informationIds);
-		List<InformationDTO> informationDTOList = new ArrayList<>();
-		for (InformationDO informationDO : informationDOList){
-			InformationDTO informationDTO = new InformationDTO();
-			informationDTO.setInformationId(informationDO.getInformationId());
-			informationDTO.setInformationName(informationDO.getInformationName());
-			informationDTO.setInformationType(informationDO.getInformationType());
-			informationDTO.setInformationContent(informationDO.getInformationContent());
-			informationDTO.setUrls(JSON.parseObject(informationDO.getUrls(),List.class));
-			//TODO:评论是否添加？
-		}
-		return informationDTOList;
+		List<String> informationIds = userLikeDOS.stream().map(UserLikeDO::getInformationId)
+				.collect(Collectors.toList());
+		List<InformationDO> informationDOList = informationDAO.batchQueryInformationById(
+				informationIds);
+		return informationDOList2informationDTOList(informationDOList);
 	}
 
 	public InformationDTO information2InformationDTO(InformationDO informationDO) {
@@ -103,7 +123,54 @@ public class InformationService {
 		informationDTO.setInformationContent(informationDO.getInformationContent());
 		informationDTO.setUrls(JSON.parseArray(informationDO.getUrls(), String.class));
 		informationDTO.setInformationType(informationDO.getInformationType());
+		informationDTO.setComments(commentDOList2commentDTOList(commentDAO.queryCommentSByInformationId(informationDO.getInformationId())));
 		return informationDTO;
 	}
 
+	public List<InformationDTO> informationDOList2informationDTOList(List<InformationDO> informationDOList){
+		List<InformationDTO> informationDTOList = new ArrayList<>();
+		for (InformationDO informationDO : informationDOList){
+			informationDTOList.add(information2InformationDTO(informationDO));
+		}
+		return informationDTOList;
+	}
+
+	//---------------------这里开始是评论相关的信息服务------------------------
+
+	public Boolean saveComment(CommentDTO commentDTO){
+		return commentDAO.insertComment(commentDTO2commentDO(commentDTO)) > 0;
+	}
+
+	public List<CommentDTO> queryCommentByUserId(String userId){
+		return commentDOList2commentDTOList(commentDAO.queryCommentSByUserId(userId));
+	}
+
+
+	public CommentDO commentDTO2commentDO(CommentDTO commentDTO){
+		CommentDO commentDO = new CommentDO();
+		commentDO.setInformationId(commentDTO.getInformationId());
+		commentDO.setContent(commentDTO.getContent());
+		commentDO.setUserId(commentDTO.getUserId());
+		commentDO.setUrls(JSON.toJSONString(commentDTO.getUrls()));
+		commentDO.setType(commentDTO.getType());
+		return commentDO;
+	}
+
+	public CommentDTO commentDO2commentDTO(CommentDO commentDO){
+		CommentDTO commentDTO = new CommentDTO();
+		commentDTO.setInformationId(commentDO.getInformationId());
+		commentDTO.setContent(commentDO.getContent());
+		commentDTO.setUserId(commentDO.getUserId());
+		commentDTO.setUrls(JSON.parseObject(commentDO.getUrls(),List.class));
+		commentDTO.setType(commentDO.getType());
+		return commentDTO;
+	}
+
+	public List<CommentDTO> commentDOList2commentDTOList(List<CommentDO> commentDOList){
+		List<CommentDTO> commentDTOList = new ArrayList<>();
+		for (CommentDO commentDO : commentDOList){
+			commentDTOList.add(commentDO2commentDTO(commentDO));
+		}
+		return commentDTOList;
+	}
 }
