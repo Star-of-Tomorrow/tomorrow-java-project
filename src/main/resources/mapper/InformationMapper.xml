@@ -20,7 +20,7 @@
     <result column="information_name" property="informationName"/>
     <result column="information_content" property="informationContent"/>
     <result column="urls" property="urls"/>
-    <result javaType="information_type" property="informationType"/>
+    <result column="information_type" property="informationType"/>
   </resultMap>
 
   <insert id="saveInformation">

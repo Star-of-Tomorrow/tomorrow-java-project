@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.DataType;
 import org.sot.project.common.ParamType;
+import org.sot.project.controller.dto.CommentDTO;
 import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.entity.activity.Activity;
@@ -58,7 +59,7 @@ public class OperationController {
         return WebUtils.process(()->informationService.queryInformationS());
     }
 
-    @GetMapping("/activity/{activityId}")
+    @GetMapping("/activity/{informationId}")
     @ApiOperation(value = "查询单个活动内容", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "activityId", value = "活动id", dataType = DataType.STRING, paramType = ParamType.PATH)})
     public ApiResponse<InformationDTO> getActivitiesByActivityId(@PathVariable String informationId) {
@@ -69,8 +70,8 @@ public class OperationController {
     // 留言部分接口
     @PostMapping(value = "/comments")
     @ApiOperation(value = "发布新进展或评论")
-    public ApiResponse<InformationDTO> postComment(@RequestBody Comment commentDTO) {
-        return ApiResponse.<List<Activity>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+    public ApiResponse<InformationDTO> postComment(@RequestBody CommentDTO commentDTO) {
+        return WebUtils.process(()->informationService.saveComment(commentDTO));
     }
 
     //做一个分页接口
