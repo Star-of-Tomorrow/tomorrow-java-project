@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import lombok.Data;
 
@@ -15,7 +16,7 @@ import lombok.Data;
  * @date 2021/11/1 5:41 下午
  */
 @Data
-@Entity
+@MappedSuperclass
 public class BaseDO {
 
 	/**

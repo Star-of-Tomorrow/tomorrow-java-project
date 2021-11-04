@@ -19,6 +19,7 @@ import lombok.Data;
 @Table(name = "table_user") // 指定数据库的表名
 public class UserBaseDO extends BaseDO{
 
+
 	/**
 	 * 用户ID
 	 */
