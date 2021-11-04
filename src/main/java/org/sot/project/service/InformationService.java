@@ -112,17 +112,7 @@ public class InformationService {
 				.collect(Collectors.toList());
 		List<InformationDO> informationDOList = informationDAO.batchQueryInformationById(
 				informationIds);
-		List<InformationDTO> informationDTOList = new ArrayList<>();
-		for (InformationDO informationDO : informationDOList) {
-			InformationDTO informationDTO = new InformationDTO();
-			informationDTO.setInformationId(informationDO.getInformationId());
-			informationDTO.setInformationName(informationDO.getInformationName());
-			informationDTO.setInformationType(informationDO.getInformationType());
-			informationDTO.setInformationContent(informationDO.getInformationContent());
-			informationDTO.setUrls(JSON.parseObject(informationDO.getUrls(), List.class));
-			//TODO:评论是否添加？
-		}
-		return informationDTOList;
+		return informationDOList2informationDTOList(informationDOList);
 	}
 
 	public InformationDTO information2InformationDTO(InformationDO informationDO) {
@@ -133,6 +123,7 @@ public class InformationService {
 		informationDTO.setInformationContent(informationDO.getInformationContent());
 		informationDTO.setUrls(JSON.parseArray(informationDO.getUrls(), String.class));
 		informationDTO.setInformationType(informationDO.getInformationType());
+		informationDTO.setComments(commentDOList2commentDTOList(commentDAO.queryCommentSByInformationId(informationDO.getInformationId())));
 		return informationDTO;
 	}
 

@@ -12,4 +12,6 @@ public interface CommentDAO {
 	int insertComment(CommentDO commentDO);
 
 	List<CommentDO> queryCommentSByUserId(String userId);
+
+	List<CommentDO> queryCommentSByInformationId(String informationId);
 }

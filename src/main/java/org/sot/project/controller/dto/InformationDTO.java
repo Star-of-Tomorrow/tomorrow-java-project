@@ -31,7 +31,7 @@ public class InformationDTO {
 	private List<String> urls;
 
 	@ApiModelProperty(value = "活动评论 仅 类型为活动时才有", required = true)
-	private List<Comment> comments;
+	private List<CommentDTO> comments;
 
 	@ApiModelProperty(value = "信息类型 瞬间类型:moment 活动类型:activity", required = true)
 	private String informationType;

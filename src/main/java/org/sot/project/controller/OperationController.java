@@ -63,7 +63,6 @@ public class OperationController {
     @ApiOperation(value = "查询单个活动内容", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "activityId", value = "活动id", dataType = DataType.STRING, paramType = ParamType.PATH)})
     public ApiResponse<InformationDTO> getActivitiesByActivityId(@PathVariable String informationId) {
-        log.info("单个参数用  @ApiImplicitParam");
         return WebUtils.process(()->informationService.queryInformationByInformationId(informationId));
     }
 

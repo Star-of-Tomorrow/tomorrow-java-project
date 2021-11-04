@@ -49,6 +49,15 @@
       and user_id = #{userId}
     </if>
   </select>
-
+  <select id="queryCommentSByInformationId" resultMap="resultMap">
+    select
+    <include refid="all_fields"/>
+    from
+    <include refid="table_name"/>
+    where 1 = 1
+    <if test="informationId!=null">
+      and information_id = #{informationId}
+    </if>
+  </select>
 
 </mapper>
