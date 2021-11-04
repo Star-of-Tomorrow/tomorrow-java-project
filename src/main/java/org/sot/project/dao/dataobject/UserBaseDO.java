@@ -24,11 +24,6 @@ public class UserBaseDO extends BaseDO{
 	private String unionId;
 
 	/**
-	 * 用户密码
-	 */
-	private String password;
-
-	/**
 	 * 用户名
 	 */
 	private String userName;
