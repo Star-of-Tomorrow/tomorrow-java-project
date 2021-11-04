@@ -1,5 +1,7 @@
 package org.sot.project.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -14,6 +16,7 @@ import org.sot.project.common.ParamType;
 import org.sot.project.controller.dto.CommentDTO;
 import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.controller.dto.LikeDTO;
+import org.sot.project.entity.InformationTypeEnum;
 import org.sot.project.entity.activity.Comment;
 import org.sot.project.service.InformationService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -103,28 +106,30 @@ public class OperationController {
         return WebUtils.process(()->informationService.queryLikeInformationS(userId));
     }
 
-
-    //轮播图接口
     @GetMapping(value = "/shuffling")
     @ApiOperation(value = "轮播图")
-    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "可传可不传", dataType = DataType.STRING, paramType = ParamType.PATH)})
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "传活动类型", dataType = DataType.STRING, paramType = ParamType.PATH)})
     public ApiResponse<List<InformationDTO>> shuffling(String type) {
-        //type指定为活动类型
-        return WebUtils.process(()->informationService.queryInformationSByType(type));
+        //org.sot.project.entity.InformationTypeEnum.ACTIVITY    activity
+        type= InformationTypeEnum.ACTIVITY.getTypeCode();
+        String finalType = type;
+        return WebUtils.process(()->informationService.queryInformationByTypeLimit3(finalType));
     }
 
 
 
-    //todo
     //用户权限校验接口
-    @PostMapping(value = "/PermissionVerify")
+    @GetMapping(value = "/PermissionVerify")
     @ApiOperation(value = "用户权限校验接口")
-    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "可传可不传", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<Boolean> PermissionVerify(@RequestBody InformationDTO informationDTO) {
+    public ApiResponse<Boolean> PermissionVerify(@PathVariable String userId,@PathVariable String informationId) {
         // infomation get userId match?
-        String userId = informationDTO.getUserId();
-        String informationId = informationDTO.getInformationId();
-        return ApiResponse.<List<Comment>>builder().code(200).message("操作成功").data(new ArrayList()).build();
+        // 用户发布权限
+        InformationDTO informationDTO = informationService.queryInformationByInformationId(informationId);
+        String userId1 = informationDTO.getUserId();
+        if(userId==userId1){
+            return ApiResponse.<Boolean>builder().code(200).message("操作成功").data(true).build();
+        }
+        return ApiResponse.<Boolean>builder().code(200).message("操作成功").data(false).build();
     }
 
 }

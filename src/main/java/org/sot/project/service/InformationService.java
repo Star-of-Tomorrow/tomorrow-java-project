@@ -56,18 +56,20 @@ public class InformationService {
 	}
 
 
-	//todo 轮播
-	public List<InformationDTO> lunbo(String type) {
+	//轮播图片 选取三个活动
+	public List<InformationDTO> queryInformationByTypeLimit3(String type) {
 		List<InformationDO> informationDOList = informationDAO.queryInformationByType(type);
 		List<InformationDTO>
 			informationDTOs =
-			informationDOList.stream().map(e -> information2InformationDTO(e))
+			informationDOList.stream().filter(informationDO -> informationDO.getUrls() != null).
+				map(e -> information2InformationDTO(e))
+				.limit(3)
 				.collect(Collectors.toList());
 		return informationDTOs;
 	}
 
 
-	public List<InformationDTO> queryInformationSByType(String type) {
+	public List<InformationDTO> queryInformationByType(String type) {
 		List<InformationDO> informationDOList = informationDAO.queryInformationByType(type);
 		List<InformationDTO>
 			informationDTOs =
