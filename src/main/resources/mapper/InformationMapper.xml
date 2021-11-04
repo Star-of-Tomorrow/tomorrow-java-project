@@ -55,5 +55,21 @@
     </if>
 
   </select>
+  <select id="queryInformationByUserId" resultMap="resultMap">
+    select
+    <include refid="all_fields"/>
+    from
+    <include refid="table_name"/>
+    where 1 = 1
+    <if test="userId != null">
+      and user_id = #{userId}
+    </if>
+  </select>
+  <select id="queryInformationS" resultMap="resultMap">
+    select
+    <include refid="all_fields"/>
+    from
+    <include refid="table_name"/>
+  </select>
 
 </mapper>

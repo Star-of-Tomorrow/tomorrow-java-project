@@ -15,10 +15,25 @@ public class CommentDO extends BaseDO{
 	/**
 	 * 关联活动Id
 	 */
-	private String activityId;
+	private String informationId;
 
 	/**
 	 * 评论内容
 	 */
 	private String content;
+
+	/**
+	 * 评论Id
+	 */
+	private String userId;
+
+	/**
+	 * 图片url
+	 */
+	private String urls;
+
+	/**
+	 * 类型
+	 */
+	private String type;
 }
