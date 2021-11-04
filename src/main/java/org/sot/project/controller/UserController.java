@@ -9,6 +9,7 @@ import org.sot.project.Utils.WxUtil;
 import org.sot.project.Vo.UserVo;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
+import org.sot.project.controller.dto.UserDTO;
 import org.sot.project.dao.dataobject.UserBaseDO;
 import org.sot.project.entity.UserTypeEnum;
 import org.sot.project.entity.user.User;
@@ -53,32 +54,35 @@ public class UserController {
     @GetMapping("/{userId}")
     @ApiOperation(value = "用户信息查询", notes = "用户主键")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)})
-    public ApiResponse<UserBaseDO> get(@PathVariable String userId) {
+    public ApiResponse<UserDTO> get(@PathVariable String userId) {
         UserBaseDO userBaseDO = userService.getUserByUserId(userId);
         if(Objects.isNull(userBaseDO)){
-            return ApiResponse.<UserBaseDO>builder().code(400).message("查询用户信息失败").data(null).build();
+            return ApiResponse.<UserDTO>builder().code(400).message("查询用户信息失败").data(null).build();
         }
-        return ApiResponse.<UserBaseDO>builder().code(200).message("操作成功").data(userBaseDO).build();
+        UserDTO result = userService.userBaseDO2UserDTO(userBaseDO);
+        return ApiResponse.<UserDTO>builder().code(200).message("操作成功").data(result).build();
     }
 
     @DeleteMapping("/{userId}")
     @ApiOperation(value = "用户注销", notes = "用户主键")
     @ApiImplicitParam(name = "id", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)
     public boolean delete(@PathVariable String userId) {
-        log.info("单个参数用 ApiImplicitParam");
+        log.info("userId is {}",userId);
+        userService.deleteUserByUserId(userId);
         return true;
     }
 
     @PostMapping("/wx/login")
     @ResponseBody
     @ApiImplicitParam(name = "", value = "用户编号", dataType = DataType.INT, paramType = ParamType.PATH)
-    public ApiResponse<UserBaseDO> userLogin(@RequestParam String code) {
+    public ApiResponse<UserDTO> userLogin(@RequestParam String code) {
         JSONObject SessionKeyOpenId = WxUtil.getSessionKeyOrOpenId(code);
         log.info("登录用户user信息:{},",SessionKeyOpenId);
         String openid = SessionKeyOpenId.getString("openid");
         String sessionKey = SessionKeyOpenId.getString("session_key");
         String unionId = SessionKeyOpenId.getString("unionId");
         UserBaseDO result;
+        UserDTO userDTOResult;
         UserBaseDO userBaseDO = userService.getUserByOpenId(openid);
         if (userBaseDO == null) {
             // 用户信息入库
@@ -90,54 +94,26 @@ public class UserController {
         } else {
             result= userBaseDO;
         }
+        userDTOResult = userService.userBaseDO2UserDTO(result);
         //6. 把新的skey返回给小程序
-        log.info("登录用户user信息:{},",result);
-        return ApiResponse.<UserBaseDO>builder().code(200).message("操作成功").data(result).build();
+        log.info("登录用户user信息:{},",userDTOResult);
+        return ApiResponse.<UserDTO>builder().code(200).message("操作成功").data(userDTOResult).build();
     }
 
 
+    @PostMapping("/userInformation")
+    @ResponseBody
+    @ApiOperation(value = "用户信息补全", notes = "")
+    public ApiResponse<UserDTO> userInfomation(@RequestBody UserDTO userDTO) {
+        log.info("登录用户user信息:{},",JSON.toJSONString(userDTO));
+        UserBaseDO userBaseDO = userService.userDTO2UserBaseDO(userDTO);
+        UserBaseDO userBaseDO1 = userService.saveUserBO(userBaseDO);
+        UserDTO userDTO1 = userService.userBaseDO2UserDTO(userBaseDO1);
+        log.info("登录用户user信息:{},",userDTO1);
+        if (userDTO1 == null) {
+            return ApiResponse.<UserDTO>builder().code(400).message("操作失败").data(userDTO1).build();
+        }
+        return ApiResponse.<UserDTO>builder().code(200).message("操作成功").data(userDTO1).build();
+    }
 
-
-//    @PostMapping
-//    @ApiOperation(value = "用户登录")
-//    public User post(@RequestBody User user) {
-//        log.info("如果是 POST PUT 这种带 @RequestBody 的可以不用写 @ApiImplicitParam");
-//        return user;
-//    }
-//
-//    @PostMapping("/multipar")
-//    @ApiOperation(value = "添加用户（DONE）")
-//    public List<User> multipar(@RequestBody List<User> user) {
-//        log.info("如果是 POST PUT 这种带 @RequestBody 的可以不用写 @ApiImplicitParam");
-//
-//        return user;
-//    }
-//
-//    @PostMapping("/array")
-//    @ApiOperation(value = "添加用户（DONE）")
-//    public User[] array(@RequestBody User[] user) {
-//        log.info("如果是 POST PUT 这种带 @RequestBody 的可以不用写 @ApiImplicitParam");
-//        return user;
-//    }
-//
-//    @PutMapping("/{id}")
-//    @ApiOperation(value = "修改用户（DONE）")
-//    public void put(@PathVariable Long id, @RequestBody User user) {
-//        log.info("如果你不想写 @ApiImplicitParam 那么 swagger 也会使用默认的参数名作为描述信息 ");
-//    }
-//
-//    @PostMapping("/{id}/file")
-//    @ApiOperation(value = "文件上传（DONE）")
-//    public String file(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
-//        log.info(file.getContentType());
-//        log.info(file.getName());
-//        log.info(file.getOriginalFilename());
-//        return file.getOriginalFilename();
-//    }
-//
-//    @PostMapping
-//    @ApiOperation(value = "用户登录")
-//    public void 登录(){
-//
-//    }
 }

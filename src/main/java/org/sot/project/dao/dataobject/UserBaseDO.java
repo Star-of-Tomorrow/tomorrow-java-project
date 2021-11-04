@@ -22,8 +22,6 @@ public class UserBaseDO extends BaseDO{
 	/**
 	 * 用户ID
 	 */
-	@Id
-	@GeneratedValue
 	@Column(name = "user_id")
 	private String userId;
 
