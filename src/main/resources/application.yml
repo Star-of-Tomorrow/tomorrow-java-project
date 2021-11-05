@@ -12,3 +12,8 @@ spring:
     username: root
     password: tomorrow123456
     url: jdbc:mysql://175.27.239.242:3306/tomorrow?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE
+
+
+mybatis:
+  mapper-locations: mapper/*.xml
+  config-location: mybatis-config.xml
