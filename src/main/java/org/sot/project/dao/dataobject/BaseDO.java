@@ -25,7 +25,7 @@ public class BaseDO {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private Long id;
+	private String id;
 
 	/**
 	 * 创建时间
