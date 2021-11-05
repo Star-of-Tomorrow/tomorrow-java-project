@@ -1,18 +1,24 @@
 package org.sot.project.dao.dataobject;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @description:
  * @author:maidang
  * @date:2021/11/04
  **/
-public class InstitutionsDO {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class InstitutionsDO extends BaseDO{
+
 	/**
 	 * 机构id
 	 */
 	private String institutionsId;
 
 	/**
-	 * 用户名字
+	 * 机构名字
 	 */
 	private String institutionsName;
 
