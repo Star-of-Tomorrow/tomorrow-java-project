@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 import org.sot.project.controller.dto.CommentDTO;
@@ -13,9 +12,9 @@ import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.dao.dataobject.CommentDO;
 import org.sot.project.dao.dataobject.InformationDO;
 import org.sot.project.dao.dataobject.UserLikeDO;
-import org.sot.project.dao.mapper.CommentDAO;
-import org.sot.project.dao.mapper.InformationDAO;
-import org.sot.project.dao.mapper.UserLikeDAO;
+import org.sot.project.dao.mapper.CommentMapper;
+import org.sot.project.dao.mapper.InformationMapper;
+import org.sot.project.dao.mapper.UserLikeMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,13 +26,13 @@ import org.springframework.stereotype.Service;
 public class InformationService {
 
 	@Resource
-	private InformationDAO informationDAO;
+	private InformationMapper informationDAO;
 
 	@Resource
-	private UserLikeDAO userLikeDAO;
+	private UserLikeMapper userLikeDAO;
 
 	@Resource
-	private CommentDAO commentDAO;
+	private CommentMapper commentDAO;
 
 	public InformationDTO createInformation(InformationDTO informationDTO){
 		//TODO:参数校验 增加根据类型的校验
