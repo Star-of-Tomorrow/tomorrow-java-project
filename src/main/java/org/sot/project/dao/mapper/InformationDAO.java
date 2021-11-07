@@ -12,7 +12,7 @@ import javax.sound.sampled.Line;
  * @date 2021/11/2 10:25 上午
  */
 @Mapper
-public interface InformationMapper {
+public interface InformationDAO {
 
 	int saveInformation(InformationDO informationDO);
 
