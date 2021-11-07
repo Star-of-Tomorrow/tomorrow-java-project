@@ -1,28 +1,21 @@
 package org.sot.project.controller;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.DataType;
 import org.sot.project.common.ParamType;
 import org.sot.project.controller.dto.ImageUrlDTO;
-import org.sot.project.entity.activity.Comment;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @description:

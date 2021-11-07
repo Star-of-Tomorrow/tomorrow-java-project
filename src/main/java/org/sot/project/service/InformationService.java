@@ -177,6 +177,7 @@ public class InformationService {
 		commentDTO.setUserId(commentDO.getUserId());
 		commentDTO.setUrls(JSON.parseObject(commentDO.getUrls(),List.class));
 		commentDTO.setType(commentDO.getType());
+		commentDTO.setCreateTime(commentDO.getCreateTime());
 		return commentDTO;
 	}
 

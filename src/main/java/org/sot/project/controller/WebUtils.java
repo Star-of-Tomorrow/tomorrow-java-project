@@ -27,6 +27,7 @@ public class WebUtils {
 			apiResponse.setCode(200);
 			return apiResponse;
 		}catch (Exception e){
+			log.error("报错",e);
 			apiResponse.setCode(400);
 			apiResponse.setMessage("出现异常");
 			return apiResponse;

@@ -1,6 +1,7 @@
 package org.sot.project.controller.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Date;
 import java.util.List;
 import lombok.Data;
 
@@ -25,5 +26,8 @@ public class CommentDTO {
 
 	@ApiModelProperty(value = "被评论的信息Id", required = true)
 	private String informationId;
+
+	@ApiModelProperty(value = "创建日期", required = true)
+	private Date createTime;
 }
 
