@@ -87,6 +87,7 @@ public class UserController {
         if (userBaseDO == null) {
             // 用户信息入库
             UserBaseDO newBaseDo = new UserBaseDO();
+            newBaseDo.init();
             newBaseDo.setOpenId(openid);
             newBaseDo.setUnionId(unionId);
             newBaseDo.setType(UserTypeEnum.ACTIVITY.getTypeCode());
