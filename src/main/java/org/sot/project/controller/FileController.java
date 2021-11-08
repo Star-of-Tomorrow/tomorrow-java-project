@@ -47,8 +47,8 @@ public class FileController {
 			//fileName修改为时间戳格式进行保存
 			String suffixName = fileName.substring(fileName.lastIndexOf("."));
 			String path = SYS_PREFIX+IMG_PATH_PREFIX + '/' + System.currentTimeMillis()+suffixName;
-			File dest = new File(System.currentTimeMillis()+suffixName);
-			urls.add(path);
+			File dest = new File(path);
+			urls.add(System.currentTimeMillis()+suffixName);
 			if (!dest.getParentFile().exists()) {
 				dest.getParentFile().mkdirs();
 			}
