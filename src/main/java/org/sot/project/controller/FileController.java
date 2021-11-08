@@ -1,14 +1,20 @@
 package org.sot.project.controller;
 
+import com.alibaba.fastjson.JSON;
+
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.DataType;
+import org.sot.project.common.FileConst;
 import org.sot.project.common.ParamType;
 import org.sot.project.controller.dto.ImageUrlDTO;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -69,6 +75,31 @@ public class FileController {
 		//拼接路径返回前端
 		List newUrls=new ArrayList<>();
 		return ApiResponse.<List<String>>builder().code(200).message("操作成功").data(newUrls).build();
+	}
+
+	@ApiOperation(value = "图片byte数组内容获取")
+	@RequestMapping(value = "/getUrls",method = RequestMethod.GET)
+	public ApiResponse<List<byte[]>> imagesRead(@RequestParam("urls") List<String> urls) {
+		//拼接路径返回前端
+		log.info("请求图片参数 {}", JSON.toJSONString(urls));
+		List<byte[]> res =new ArrayList<>();
+		for (int i = 0; i <urls.size(); i++) {
+			File file = new File(FileConst.allFile + urls.get(i));
+			FileInputStream inputStream = null;
+			try {
+				inputStream = new FileInputStream(file);
+				byte[] bytes = new byte[inputStream.available()];
+				inputStream.read(bytes, 0, inputStream.available());
+				res.add(bytes);
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+		}
+		return ApiResponse.<List<byte[]>>builder().code(200).message("操作成功").data(res).build();
 	}
 
 }
