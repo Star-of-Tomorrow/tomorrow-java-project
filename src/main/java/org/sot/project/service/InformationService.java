@@ -12,9 +12,9 @@ import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.dao.dataobject.CommentDO;
 import org.sot.project.dao.dataobject.InformationDO;
 import org.sot.project.dao.dataobject.UserLikeDO;
-import org.sot.project.dao.mapper.CommentDAO;
-import org.sot.project.dao.mapper.UserLikeDAO;
+import org.sot.project.dao.repository.CommentRepository;
 import org.sot.project.dao.repository.InformationRepository;
+import org.sot.project.dao.repository.UserLikeRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,10 +29,10 @@ public class InformationService {
 	private InformationRepository informationRepository;
 
 	@Resource
-	private UserLikeDAO userLikeDAO;
+	private UserLikeRepository userLikeRepository;
 
 	@Resource
-	private CommentDAO commentDAO;
+	private CommentRepository commentRepository;
 
 	public InformationDTO createInformation(InformationDTO informationDTO){
 		//TODO:参数校验 增加根据类型的校验
@@ -106,7 +106,7 @@ public class InformationService {
 		userLikeDO.setUserId(likeDTO.getUserId());
 		userLikeDO.setInformationId(userLikeDO.getInformationId());
 		//存储
-		return userLikeDAO.saveUserLike(userLikeDO)>0;
+		return userLikeRepository.save(userLikeDO)!=null;
 	}
 
 	public Boolean deleteLike(LikeDTO likeDTO){
@@ -116,11 +116,12 @@ public class InformationService {
 		userLikeDO.setUserId(likeDTO.getUserId());
 		userLikeDO.setInformationId(userLikeDO.getInformationId());
 		//存储
-		return userLikeDAO.deleteUserLike(userLikeDO)>0;
+		return userLikeRepository.deleteByUserIdAndInformationId(userLikeDO.getUserId(),
+				userLikeDO.getInformationId())>0;
 	}
 
 	public List<InformationDTO> queryLikeInformationS(String userId) {
-		List<UserLikeDO> userLikeDOS = userLikeDAO.queryUserLikeByUserId(userId);
+		List<UserLikeDO> userLikeDOS = userLikeRepository.findAllByUserId(userId);
 		List<String> informationIds = userLikeDOS.stream().map(UserLikeDO::getInformationId)
 				.collect(Collectors.toList());
 		List<InformationDO> informationDOList = informationRepository.findAllByUserId(
@@ -136,7 +137,7 @@ public class InformationService {
 		informationDTO.setInformationContent(informationDO.getInformationContent());
 		informationDTO.setUrls(JSON.parseArray(informationDO.getUrls(), String.class));
 		informationDTO.setInformationType(informationDO.getInformationType());
-		informationDTO.setComments(commentDOList2commentDTOList(commentDAO.queryCommentSByInformationId(informationDO.getInformationId())));
+		informationDTO.setComments(commentDOList2commentDTOList(commentRepository.findAllByInformationId(informationDO.getInformationId())));
 		return informationDTO;
 	}
 
@@ -151,11 +152,11 @@ public class InformationService {
 	//---------------------这里开始是评论相关的信息服务------------------------
 
 	public Boolean saveComment(CommentDTO commentDTO){
-		return commentDAO.insertComment(commentDTO2commentDO(commentDTO)) > 0;
+		return commentRepository.save(commentDTO2commentDO(commentDTO)) != null;
 	}
 
 	public List<CommentDTO> queryCommentByUserId(String userId){
-		return commentDOList2commentDTOList(commentDAO.queryCommentSByUserId(userId));
+		return commentDOList2commentDTOList(commentRepository.findAllByInformationId(userId));
 	}
 
 
