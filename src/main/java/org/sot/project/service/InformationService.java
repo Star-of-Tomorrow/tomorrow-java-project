@@ -46,7 +46,6 @@ public class InformationService {
 		informationDO.setInformationName(informationDTO.getInformationName());
 		informationDO.setInformationContent(informationDTO.getInformationContent());
 		informationDO.setUrls(JSON.toJSONString(informationDTO.getUrls()));
-		informationDO.setUrls(JSON.toJSONString(informationDTO.getComments()));
 		informationDO.setInformationType(informationDTO.getInformationType());
 		//存储
 		boolean saveSuccess = informationRepository.save(informationDO)!=null;
