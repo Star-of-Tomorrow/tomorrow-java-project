@@ -9,8 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.DataType;
@@ -19,6 +21,7 @@ import org.sot.project.common.ParamType;
 import org.sot.project.controller.dto.ImageUrlDTO;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,27 +81,29 @@ public class FileController {
 	}
 
 	@ApiOperation(value = "图片byte数组内容获取")
-	@RequestMapping(value = "/getUrls",method = RequestMethod.GET)
-	public List<byte[]> imagesRead(@RequestParam("urls") List<String> urls) {
+	@RequestMapping(value = "/get/{url}",method = RequestMethod.GET)
+	public List<byte[]> imagesRead(@PathVariable String url, HttpServletResponse response) {
 		//拼接路径返回前端
-		log.info("请求图片参数 {}", JSON.toJSONString(urls));
+		log.info("请求图片参数 {}", JSON.toJSONString(url));
 		List<byte[]> res =new ArrayList<>();
-		for (int i = 0; i <urls.size(); i++) {
-			File file = new File(FileConst.allFile + urls.get(i));
-			FileInputStream inputStream = null;
-			try {
-				inputStream = new FileInputStream(file);
-				byte[] bytes = new byte[inputStream.available()];
-				inputStream.read(bytes, 0, inputStream.available());
-				res.add(bytes);
-			} catch (FileNotFoundException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
+		File file = new File(FileConst.allFile + url);
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+			byte[] bytes = new byte[inputStream.available()];
+			inputStream.read(bytes, 0, inputStream.available());
+			OutputStream outputStream = response.getOutputStream();
+			outputStream.write(bytes);
+			outputStream.flush();
+			outputStream.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
+
 		return res;
 	}
 
