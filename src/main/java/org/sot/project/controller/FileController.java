@@ -11,11 +11,15 @@ import org.sot.project.common.ApiResponse;
 import org.sot.project.common.DataType;
 import org.sot.project.common.ParamType;
 import org.sot.project.controller.dto.ImageUrlDTO;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  * @description:
@@ -27,8 +31,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class FileController {
 
-	public final static String IMG_PATH_PREFIX = "static/upload/imgs";
+	public final static String IMG_PATH_PREFIX = "/src/main/resources/static/upload/imgs";
 
+
+	public final  static  String SYS_PREFIX= System.getProperty("user.dir");
 
 	@ApiOperation(value = "图片上传")
 	@RequestMapping(value = "/upload",method = RequestMethod.POST)
@@ -38,8 +44,10 @@ public class FileController {
 		List<String> urls = result.getUrls();
 		for (int i = 0; i < files.length; i++) {
 			String fileName = files[i].getOriginalFilename();  // 文件名
-			String path = IMG_PATH_PREFIX + '/' + fileName;
-			File dest = new File(path);
+			//fileName修改为时间戳格式进行保存
+			String suffixName = fileName.substring(fileName.lastIndexOf("."));
+			String path = SYS_PREFIX+IMG_PATH_PREFIX + '/' + System.currentTimeMillis()+suffixName;
+			File dest = new File(System.currentTimeMillis()+suffixName);
 			urls.add(path);
 			if (!dest.getParentFile().exists()) {
 				dest.getParentFile().mkdirs();
