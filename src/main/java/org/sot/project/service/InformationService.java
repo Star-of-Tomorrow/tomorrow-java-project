@@ -13,8 +13,8 @@ import org.sot.project.dao.dataobject.CommentDO;
 import org.sot.project.dao.dataobject.InformationDO;
 import org.sot.project.dao.dataobject.UserLikeDO;
 import org.sot.project.dao.mapper.CommentDAO;
-import org.sot.project.dao.mapper.InformationDAO;
 import org.sot.project.dao.mapper.UserLikeDAO;
+import org.sot.project.dao.repository.InformationRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class InformationService {
 
 	@Resource
-	private InformationDAO informationDAO;
+	private InformationRepository informationRepository;
 
 	@Resource
 	private UserLikeDAO userLikeDAO;
@@ -47,7 +47,7 @@ public class InformationService {
 		informationDO.setUrls(JSON.toJSONString(informationDTO.getComments()));
 		informationDO.setInformationType(informationDTO.getInformationType());
 		//存储
-		boolean saveSuccess = informationDAO.saveInformation(informationDO)>0;
+		boolean saveSuccess = informationRepository.save(informationDO)!=null;
 		if(saveSuccess){
 			return informationDTO;
 		}
@@ -57,7 +57,7 @@ public class InformationService {
 
 	//轮播图片 选取三个活动
 	public List<InformationDTO> queryInformationByTypeLimit3(String type) {
-		List<InformationDO> informationDOList = informationDAO.queryInformationByType(type);
+		List<InformationDO> informationDOList = informationRepository.findAllByInformationType(type);
 		List<InformationDTO>
 			informationDTOs =
 			informationDOList.stream().filter(informationDO -> informationDO.getUrls() != null).
@@ -69,7 +69,7 @@ public class InformationService {
 
 
 	public List<InformationDTO> queryInformationByType(String type) {
-		List<InformationDO> informationDOList = informationDAO.queryInformationByType(type);
+		List<InformationDO> informationDOList = informationRepository.findAllByInformationType(type);
 		List<InformationDTO>
 			informationDTOs =
 			informationDOList.stream().map(e -> information2InformationDTO(e))
@@ -78,14 +78,14 @@ public class InformationService {
 	}
 
 	public List<InformationDTO> queryInformationByUserId(String userId){
-		List<InformationDO> informationDOList = informationDAO.queryInformationByUserId(userId);
+		List<InformationDO> informationDOList = informationRepository.findAllByUserId(userId);
 		return informationDOList2informationDTOList(informationDOList);
 	}
 
 	public InformationDTO queryInformationByInformationId(String informationId){
 		List<String> informationIdS = new ArrayList<>();
 		informationIdS.add(informationId);
-		List<InformationDO> informationDOList = informationDAO.batchQueryInformationById(informationIdS);
+		List<InformationDO> informationDOList = informationRepository.findAllByUserId(informationIdS);
 		List<InformationDTO> informationDTOList = informationDOList2informationDTOList(informationDOList);
 		if (informationDTOList.size() == 0){
 			return new InformationDTO();
@@ -95,7 +95,7 @@ public class InformationService {
 	}
 
 	public List<InformationDTO> queryInformationS(){
-		List<InformationDO> informationDOList = informationDAO.queryInformationS();
+		List<InformationDO> informationDOList = informationRepository.findAll();
 		return informationDOList2informationDTOList(informationDOList);
 	}
 
@@ -123,7 +123,7 @@ public class InformationService {
 		List<UserLikeDO> userLikeDOS = userLikeDAO.queryUserLikeByUserId(userId);
 		List<String> informationIds = userLikeDOS.stream().map(UserLikeDO::getInformationId)
 				.collect(Collectors.toList());
-		List<InformationDO> informationDOList = informationDAO.batchQueryInformationById(
+		List<InformationDO> informationDOList = informationRepository.findAllByUserId(
 				informationIds);
 		return informationDOList2informationDTOList(informationDOList);
 	}
