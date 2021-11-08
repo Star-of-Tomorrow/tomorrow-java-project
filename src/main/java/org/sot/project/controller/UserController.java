@@ -10,7 +10,10 @@ import org.sot.project.Vo.UserVo;
 import org.sot.project.common.ApiResponse;
 import org.sot.project.common.ParamType;
 import org.sot.project.controller.dto.UserDTO;
+import org.sot.project.dao.dataobject.InstitutionsDO;
 import org.sot.project.dao.dataobject.UserBaseDO;
+import org.sot.project.dao.repository.InstitutionRepository;
+import org.sot.project.dao.repository.UserRepository;
 import org.sot.project.entity.UserTypeEnum;
 import org.sot.project.entity.user.User;
 import org.sot.project.common.DataType;
@@ -43,6 +46,12 @@ public class UserController {
 
     @Resource
     UserService userService;
+
+    @Resource
+    InstitutionRepository institutionRepository;
+
+    @Resource
+    UserRepository userRepository;
 
     @GetMapping
     @ApiOperation(value = "用户登录", notes = "备注")
@@ -117,4 +126,17 @@ public class UserController {
         return ApiResponse.<UserDTO>builder().code(200).message("操作成功").data(userDTO1).build();
     }
 
+    @GetMapping("/getUserInstitutions")
+    @ResponseBody
+    @ApiOperation(value = "获取用户机构信息", notes = "返回机构Code")
+    public ApiResponse<String> getUserInstitutions(@RequestParam String userId) {
+        return WebUtils.process(()->userRepository.findByUserId(userId).getType());
+    }
+
+    @GetMapping("/getInstitutions")
+    @ResponseBody
+    @ApiOperation(value = "获取机构信息", notes = "")
+    public ApiResponse<InstitutionsDO> getInstitutions(@RequestParam String institutionId) {
+        return WebUtils.process(()->institutionRepository.findByInstitutionsId(institutionId));
+    }
 }

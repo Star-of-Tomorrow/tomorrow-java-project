@@ -3,6 +3,7 @@ package org.sot.project.service;
 import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -41,6 +42,7 @@ public class InformationService {
 		InformationDO informationDO = new InformationDO();
 		informationDO.init();
 		informationDO.setUserId(informationDTO.getUserId());
+		informationDO.setInformationId(UUID.randomUUID().toString());
 		informationDO.setInformationName(informationDTO.getInformationName());
 		informationDO.setInformationContent(informationDTO.getInformationContent());
 		informationDO.setUrls(JSON.toJSONString(informationDTO.getUrls()));
