@@ -16,7 +16,7 @@ import lombok.Data;
  */
 @Data
 @Entity // jpa的注解，需要加
-@Table(name = "table_user") // 指定数据库的表名
+@Table(name = "user_base") // 指定数据库的表名
 public class UserBaseDO extends BaseDO{
 
 
