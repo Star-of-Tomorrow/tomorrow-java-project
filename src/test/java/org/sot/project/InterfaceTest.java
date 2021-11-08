@@ -18,6 +18,9 @@ public class InterfaceTest {
 
 	@Test
 	public void testInterface(){
+		//step1.登录注册
+		//step2.发布瞬间
+		//step3.
 		List<String> responses = new ArrayList<>();
 		Map<String,String> paramMap = new HashMap<>();
 		paramMap.put("userId","testUser");
