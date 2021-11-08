@@ -79,7 +79,7 @@ public class FileController {
 
 	@ApiOperation(value = "图片byte数组内容获取")
 	@RequestMapping(value = "/getUrls",method = RequestMethod.GET)
-	public ApiResponse<List<byte[]>> imagesRead(@RequestParam("urls") List<String> urls) {
+	public List<byte[]> imagesRead(@RequestParam("urls") List<String> urls) {
 		//拼接路径返回前端
 		log.info("请求图片参数 {}", JSON.toJSONString(urls));
 		List<byte[]> res =new ArrayList<>();
@@ -99,7 +99,7 @@ public class FileController {
 				System.out.println(e.getMessage());
 			}
 		}
-		return ApiResponse.<List<byte[]>>builder().code(200).message("操作成功").data(res).build();
+		return res;
 	}
 
 }
