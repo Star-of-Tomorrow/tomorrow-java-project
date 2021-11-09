@@ -193,6 +193,7 @@ public class InformationService {
 		commentDTO.setInformationId(commentDO.getInformationId());
 		commentDTO.setContent(commentDO.getContent());
 		commentDTO.setUserId(commentDO.getUserId());
+		commentDTO.setUserBaseDO(userRepository.findByUserId(commentDO.getUserId()));
 		commentDTO.setUrls(JSON.parseObject(commentDO.getUrls(),List.class));
 		commentDTO.setType(commentDO.getType());
 		commentDTO.setCreateTime(commentDO.getCreateTime());

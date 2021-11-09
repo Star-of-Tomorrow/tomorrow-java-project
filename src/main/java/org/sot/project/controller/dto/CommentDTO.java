@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import java.util.List;
 import lombok.Data;
+import org.sot.project.dao.dataobject.UserBaseDO;
 
 /**
  * 最新进展及评论DTO
@@ -27,6 +28,11 @@ public class CommentDTO {
 
 	@ApiModelProperty(value = "评论人", required = true)
 	private String userId;
+
+	/**
+	 * 用户详情
+	 */
+	private UserBaseDO userBaseDO;
 
 	@ApiModelProperty(value = "被评论的信息Id", required = true)
 	private String informationId;
