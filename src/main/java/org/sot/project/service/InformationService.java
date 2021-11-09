@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.sot.project.controller.dto.CommentDTO;
 import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.controller.dto.InformationDTO;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
  * @date 2021/11/2 10:35 上午
  */
 @Service
+@Slf4j
 public class InformationService {
 
 	@Resource
@@ -42,7 +44,7 @@ public class InformationService {
 
 	public InformationDTO createInformation(InformationDTO informationDTO){
 		//TODO:参数校验 增加根据类型的校验
-
+		log.info(informationDTO.toString());
 		//TODO:封装下面的方法 转换
 		InformationDO informationDO = new InformationDO();
 		informationDO.init();
