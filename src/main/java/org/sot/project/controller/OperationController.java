@@ -126,7 +126,7 @@ public class OperationController {
     //用户权限校验接口
     @GetMapping(value = "/PermissionVerify")
     @ApiOperation(value = "用户权限校验接口")
-    public ApiResponse<Boolean> PermissionVerify(@PathVariable String userId,@PathVariable String informationId) {
+    public ApiResponse<Boolean> PermissionVerify(@RequestParam("userId") String userId,@RequestParam("informationId") String informationId) {
         // infomation get userId match?
         // 用户发布权限
         InformationDTO informationDTO = informationService.queryInformationByInformationId(informationId);
