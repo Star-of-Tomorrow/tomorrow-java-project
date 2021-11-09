@@ -56,7 +56,7 @@ public class OperationController {
     //todo 分页
     @GetMapping("/information/all")
     @ApiOperation(value = "查询所有活动或者瞬间列表", notes = "")
-    public ApiResponse<List<InformationDTO>> getActivities(@RequestParam("type") String type) {
+    public ApiResponse<List<InformationDTO>> getActivities(@RequestParam(value = "type", required = false) String type) {
         return WebUtils.process(()->informationService.queryInformationS(type));
     }
 
