@@ -25,7 +25,7 @@ public class InterfaceTest {
 		Map<String,String> paramMap = new HashMap<>();
 		paramMap.put("userId","testUser");
 		paramMap.put("informationId","testInformation");
-		paramMap.put("informationName","testInformationName");
+		paramMap.put("informationName","测试中文");
 		paramMap.put("informationContent","testinformationContent");
 		paramMap.put("informationType","moment");
 		responses.add(HttpClientUtil.doPostJson("http://localhost:9090/demo/operation/createInformation", JSON.toJSONString(paramMap)));
