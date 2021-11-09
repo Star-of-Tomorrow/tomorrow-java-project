@@ -89,9 +89,7 @@ public class InformationService {
 	}
 
 	public InformationDTO queryInformationByInformationId(String informationId){
-		List<String> informationIdS = new ArrayList<>();
-		informationIdS.add(informationId);
-		List<InformationDO> informationDOList = informationRepository.findAllByUserId(informationIdS);
+		List<InformationDO> informationDOList = informationRepository.findAllByInformationId(informationId);
 		List<InformationDTO> informationDTOList = informationDOList2informationDTOList(informationDOList);
 		if (informationDTOList.size() == 0){
 			return new InformationDTO();
