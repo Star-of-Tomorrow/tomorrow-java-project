@@ -101,7 +101,12 @@ public class InformationService {
 	}
 
 	public List<InformationDTO> queryInformationS(String type){
-		List<InformationDO> informationDOList = informationRepository.findAllByInformationType(type);
+		List<InformationDO> informationDOList;
+		if (type == null || type.length() == 0){
+			informationDOList = informationRepository.findAll();
+		}else {
+			informationDOList = informationRepository.findAllByInformationType(type);
+		}
 		return informationDOList2informationDTOList(informationDOList);
 	}
 
