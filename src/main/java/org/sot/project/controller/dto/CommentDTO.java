@@ -12,6 +12,10 @@ import lombok.Data;
  */
 @Data
 public class CommentDTO {
+
+	@ApiModelProperty(value = "评论Id", required = true)
+	private Long id;
+
 	@ApiModelProperty(value = "评论内容", required = true)
 	private String content;
 
