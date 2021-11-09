@@ -179,6 +179,7 @@ public class InformationService {
 
 	public CommentDO commentDTO2commentDO(CommentDTO commentDTO){
 		CommentDO commentDO = new CommentDO();
+		commentDO.init();
 		commentDO.setInformationId(commentDTO.getInformationId());
 		commentDO.setContent(commentDTO.getContent());
 		commentDO.setUserId(commentDTO.getUserId());
