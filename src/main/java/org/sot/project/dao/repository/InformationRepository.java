@@ -19,6 +19,10 @@ public interface InformationRepository extends JpaRepository<InformationDO,Strin
 
 	List<InformationDO> findAllByUserId(String userId);
 
+	List<InformationDO> findAllByUserIdAndInformationType(String userId,String informationType);
+
 	List<InformationDO> findAll();
+
+	List<InformationDO> findAllByUserIdAndInformationType(List<String> userId, String informationType);
 
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -44,20 +45,27 @@ public class OperationController {
         return WebUtils.process(()->informationService.createInformation(informationDTO));
     }
 
-    @GetMapping("/informationByUserId/{userId}")
-    @ApiOperation(value = "活动及瞬间信息查询 通过用户id", notes = "")
+    @GetMapping("/informationByUserId")
+    @ApiOperation(value = "活动及瞬间信息查询 通过用户id和type", notes = "")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<List<InformationDTO>> getInformationsByUserId(@PathVariable String userId) {
-        return WebUtils.process(()->informationService.queryInformationByUserId(userId));
+    public ApiResponse<List<InformationDTO>> getInformationsByUserId(@RequestParam("userId") String userId, @RequestParam("type") String type) {
+        return WebUtils.process(()->informationService.queryInformationByUserIdAndType(userId,type));
     }
 
 
     //todo 分页
     @GetMapping("/information/all")
-    @ApiOperation(value = "查询所有活动列表", notes = "")
-    public ApiResponse<List<InformationDTO>> getActivities() {
-        return WebUtils.process(()->informationService.queryInformationS());
+    @ApiOperation(value = "查询所有活动或者瞬间列表", notes = "")
+    public ApiResponse<List<InformationDTO>> getActivities(@RequestParam("type") String type) {
+        return WebUtils.process(()->informationService.queryInformationS(type));
     }
+
+    @GetMapping("/information/institutions")
+    @ApiOperation(value = "根据机构查询信息", notes = "")
+    public ApiResponse<List<InformationDTO>> getActivitiesByInstitutions(@RequestParam("institutionId") String institutionId) {
+        return WebUtils.process(()->informationService.queryInformationByInstitutionId(institutionId));
+    }
+
 
     @GetMapping("/activity/{informationId}")
     @ApiOperation(value = "查询单个活动内容", notes = "")

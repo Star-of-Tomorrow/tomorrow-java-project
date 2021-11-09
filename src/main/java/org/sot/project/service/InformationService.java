@@ -12,10 +12,12 @@ import org.sot.project.controller.dto.LikeDTO;
 import org.sot.project.controller.dto.InformationDTO;
 import org.sot.project.dao.dataobject.CommentDO;
 import org.sot.project.dao.dataobject.InformationDO;
+import org.sot.project.dao.dataobject.UserBaseDO;
 import org.sot.project.dao.dataobject.UserLikeDO;
 import org.sot.project.dao.repository.CommentRepository;
 import org.sot.project.dao.repository.InformationRepository;
 import org.sot.project.dao.repository.UserLikeRepository;
+import org.sot.project.dao.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,6 +36,9 @@ public class InformationService {
 
 	@Resource
 	private CommentRepository commentRepository;
+
+	@Resource
+	private UserRepository userRepository;
 
 	public InformationDTO createInformation(InformationDTO informationDTO){
 		//TODO:参数校验 增加根据类型的校验
@@ -78,8 +83,8 @@ public class InformationService {
 		return informationDTOs;
 	}
 
-	public List<InformationDTO> queryInformationByUserId(String userId){
-		List<InformationDO> informationDOList = informationRepository.findAllByUserId(userId);
+	public List<InformationDTO> queryInformationByUserIdAndType(String userId,String type){
+		List<InformationDO> informationDOList = informationRepository.findAllByUserIdAndInformationType(userId, type);
 		return informationDOList2informationDTOList(informationDOList);
 	}
 
@@ -95,9 +100,15 @@ public class InformationService {
 		}
 	}
 
-	public List<InformationDTO> queryInformationS(){
-		List<InformationDO> informationDOList = informationRepository.findAll();
+	public List<InformationDTO> queryInformationS(String type){
+		List<InformationDO> informationDOList = informationRepository.findAllByInformationType(type);
 		return informationDOList2informationDTOList(informationDOList);
+	}
+
+	public List<InformationDTO> queryInformationByInstitutionId(String institutionId){
+		List<UserBaseDO> userBaseDOS = userRepository.findAllByType(institutionId);
+		List<String> userId = userBaseDOS.stream().map(UserBaseDO::getUserId).collect(Collectors.toList());
+		return informationDOList2informationDTOList(informationRepository.findAllByUserIdAndInformationType(userId,"activity"));
 	}
 
 	public Boolean giveLike(LikeDTO likeDTO){
