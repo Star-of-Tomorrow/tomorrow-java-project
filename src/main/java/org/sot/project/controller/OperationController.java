@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.sot.project.common.ApiResponse;
@@ -131,7 +132,7 @@ public class OperationController {
         // 用户发布权限
         InformationDTO informationDTO = informationService.queryInformationByInformationId(informationId);
         String userId1 = informationDTO.getUserId();
-        if(userId==userId1){
+        if((userId.equals(userId1))){
             return ApiResponse.<Boolean>builder().code(200).message("操作成功").data(true).build();
         }
         return ApiResponse.<Boolean>builder().code(200).message("操作成功").data(false).build();
