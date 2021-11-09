@@ -29,4 +29,10 @@ public class InstitutionsDO extends BaseDO{
 	@Column(name = "institutions_name")
 	private String institutionsName;
 
+	/**
+	 * 机构图片
+	 */
+	@Column(name = "url")
+	private String url;
+
 }
