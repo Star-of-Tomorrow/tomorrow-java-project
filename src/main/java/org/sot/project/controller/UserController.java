@@ -130,9 +130,9 @@ public class UserController {
 
     @GetMapping("/getUserInstitutions")
     @ResponseBody
-    @ApiOperation(value = "获取用户机构信息", notes = "返回机构Code")
-    public ApiResponse<String> getUserInstitutions(@RequestParam String userId) {
-        return WebUtils.process(()->userRepository.findByUserId(userId).getType());
+    @ApiOperation(value = "获取用户机是否属于某个机构", notes = "返回机构Code")
+    public ApiResponse<Boolean> getUserInstitutions(@RequestParam String userId) {
+        return WebUtils.process(()->!userRepository.findByUserId(userId).getType().equals("personal"));
     }
 
     @GetMapping("/getInstitutions")
