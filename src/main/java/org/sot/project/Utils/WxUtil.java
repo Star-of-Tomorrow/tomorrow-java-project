@@ -22,9 +22,9 @@ public class WxUtil {
 		Map<String, String> requestUrlParam = new HashMap<>();
 		// https://mp.weixin.qq.com/wxopen/devprofile?action=get_profile&token=164113089&lang=zh_CN
 		//小程序appId
-		requestUrlParam.put("appid", "wx818b2b43c52117f9");
+		requestUrlParam.put("appid", "wxb5a5938bdda04dba");
 		//小程序secret
-		requestUrlParam.put("secret", "52877e406406b61b829a789fb2b68b3a");
+		requestUrlParam.put("secret", "b100b39c24eb6b3d8b12e0e831fdcf7d");
 		//小程序端返回的code
 		requestUrlParam.put("js_code", code);
 		//默认参数
