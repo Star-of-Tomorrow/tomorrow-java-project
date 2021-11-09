@@ -3,6 +3,7 @@ package org.sot.project.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.sot.project.Utils.WxUtil;
@@ -97,6 +98,7 @@ public class UserController {
             // 用户信息入库
             UserBaseDO newBaseDo = new UserBaseDO();
             newBaseDo.init();
+            newBaseDo.setUserId(UUID.randomUUID().toString());
             newBaseDo.setOpenId(openid);
             newBaseDo.setUnionId(unionId);
             newBaseDo.setType(UserTypeEnum.ACTIVITY.getTypeCode());
