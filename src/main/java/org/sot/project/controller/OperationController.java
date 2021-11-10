@@ -105,10 +105,10 @@ public class OperationController {
         return WebUtils.process(()->informationService.deleteLike(likeDTO));
     }
 
-    @PostMapping(value = "/queryUserLike")
+    @GetMapping(value = "/queryUserLike")
     @ApiOperation(value = "查询用户点赞过的内容")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户id", dataType = DataType.STRING, paramType = ParamType.PATH)})
-    public ApiResponse<List<InformationDTO>> queryUserLike( String userId) {
+    public ApiResponse<List<InformationDTO>> queryUserLike(@RequestParam String userId) {
         return WebUtils.process(()->informationService.queryLikeInformationS(userId));
     }
 
